@@ -49,13 +49,13 @@
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
             <version>4.0.1.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.android.support</groupId>
             <artifactId>support-v4</artifactId>
             <version>19.0.0</version>
-            <scope>provided</scope>
         </dependency>
 
     </dependencies>
@@ -90,13 +90,8 @@
                 <artifactId>android-maven-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
+                    <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
                     <extractDuplicates>true</extractDuplicates>
-                    <!-- --> 
-                    
-                    <dex>
-                        <coreLibrary>true</coreLibrary>
-                    </dex>
-                    <!-- -->
                     <sdk>
                         <!-- platform or api level (api level 4 = platform 1.6)-->
                         <platform>18</platform>
@@ -116,39 +111,6 @@
                     </excludes>
                     <argLine>-Xmx1024m -XX:MaxPermSize=512m</argLine>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jarsigner-plugin</artifactId>
-                <version>1.2</version>
-                <executions>
-                    <execution>
-                        <id>signing</id>
-                        <goals>
-                            <goal>sign</goal>
-                            <goal>verify</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <inherited>true</inherited>
-                        <configuration>
-                            <removeExistingSignatures>true</removeExistingSignatures>
-                            <archiveDirectory/>
-                            <includes>
-                                <include>target/android-tdd-rampup.apk</include>
-                            </includes>
-                            <keystore>mcx-debug.keystore</keystore>
-                            <alias>mcx</alias>
-                            <storepass>mcxdebug</storepass>
-                            <keypass>mcxdebug</keypass>
-                            <arguments>
-                                <argument>-sigalg</argument>
-                                <argument>MD5withRSA</argument>
-                                <argument>-digestalg</argument>
-                                <argument>SHA1</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
