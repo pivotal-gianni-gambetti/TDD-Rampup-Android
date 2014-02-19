@@ -1,4 +1,4 @@
-package com.pivotallabs.internal.tdd;
+package com.pivotallabs.yellowpages;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;

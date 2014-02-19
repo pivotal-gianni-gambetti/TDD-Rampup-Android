@@ -1,4 +1,6 @@
-package com.pivotallabs.internal.tdd;
+package com.pivotallabs.yellowpages;
+
+import com.pivotallabs.yellowpages.R;
 
 import android.os.Bundle;
 import android.app.Activity;
