@@ -1,15 +1,20 @@
 package com.pivotallabs.yellowpages.api;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import android.net.Uri;
 import android.util.Log;
 
-import com.google.gson.Gson;
+import com.android.volley.Request;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.pivotallabs.toolbox.GsonRequest;
+import com.pivotallabs.toolbox.UserGuid;
 
-
+@Singleton
 public class YellowPagesApi extends Api {
 
 	private static final String TAG = YellowPagesApi.class.getPackage().getName();
@@ -20,15 +25,13 @@ public class YellowPagesApi extends Api {
 	
 	static final String API_KEY_QUERY_PARAM = "apikey";
 	
-	// TODO inject this using roboguice
-	private final Gson jsonParser = new Gson();
+	private UserGuid guid;
 	
-	public YellowPagesApi() {
-		super(YELLOW_PAGE_HOST);
-	}
-
-	public YellowPagesApi(String protocol) {
-		super(protocol, YELLOW_PAGE_HOST);
+	@Inject
+	public YellowPagesApi(UserGuid guid) {
+		super("http", YELLOW_PAGE_HOST);
+		
+		this.guid = guid;
 	}
 
 	@Override
@@ -39,7 +42,7 @@ public class YellowPagesApi extends Api {
 	}
 	
 	// TODO Refactor WHERE + UID into location + user identifier providers respectively
-	public Response findBusiness(int page, String what, String where, String uid) throws ApiException{
+	public Request<Response> findBusiness(int page, String what, String where, Listener<Response> listener, ErrorListener errorListener) {
 		
 		StringBuilder validation = new StringBuilder();
 		
@@ -64,26 +67,16 @@ public class YellowPagesApi extends Api {
 		params.put("what", what);
 		params.put("where", where);
 		
-		if(uid == null || uid.length() == 0){
-			uid = "abc123";
-			// TODO use uid provider
-		}
-		params.put("UID", uid);
+		params.put("UID", guid.getGuid());
 		
 		params.put("fmt", "json");
 		params.put("lang", "en");
 		
 		Uri path = getPath("/FindBusiness/", params);
 		
-		try {
-			byte[] data = getResource(path);
-			
-			return jsonParser.fromJson(new String(data), Response.class);
-			
-		} catch (IOException e) {
-			Log.w(TAG, e.getMessage());
-			throw new ApiException(e);
-		}
+		Log.v(TAG, path.toString());
+		
+		return new GsonRequest<Response>(path.toString(), Response.class, listener, errorListener);
 	}
 	
 	public static class Response {

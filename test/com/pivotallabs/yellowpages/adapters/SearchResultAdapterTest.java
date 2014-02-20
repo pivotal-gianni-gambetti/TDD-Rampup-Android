@@ -1,4 +1,4 @@
-package com.pivotallabs.yellowpages;
+package com.pivotallabs.yellowpages.adapters;
 
 import junit.framework.Assert;
 
@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.pivotallabs.testing.RobolectricTestRunnerWithInjection;
-import com.pivotallabs.yellowpages.adapters.SearchResultAdapter;
+import com.pivotallabs.yellowpages.R;
 import com.pivotallabs.yellowpages.api.YellowPagesApi.Listing;
 
 @RunWith(RobolectricTestRunnerWithInjection.class)

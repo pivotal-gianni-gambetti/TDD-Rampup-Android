@@ -1,10 +1,5 @@
 package com.pivotallabs.yellowpages.api;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 
@@ -40,42 +35,6 @@ public class Api {
 		}
 
 		return builder.build();
-	}
-
-	protected byte[] getResource(Uri uri) throws IOException {
-
-		URL url = new URL(uri.toString());
-
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-		connection.connect();
-		
-		int responseCode = connection.getResponseCode();
-		
-		if(responseCode != HttpURLConnection.HTTP_OK){
-			connection.disconnect();
-			throw new IOException("Error making call: http response code " + responseCode);
-		}
-		
-		InputStream stream = connection.getInputStream();
-
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-
-		int read = 0;
-		byte[] buffer = new byte[512];
-
-		while(read >= 0){
-
-			read = stream.read(buffer);
-
-			if(read > 0){
-				bytes.write(buffer, 0, read);
-			}
-		}
-
-		stream.close();
-
-		return bytes.toByteArray();
 	}
 
 }

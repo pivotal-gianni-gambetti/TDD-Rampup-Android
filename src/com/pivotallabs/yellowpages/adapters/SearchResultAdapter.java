@@ -1,5 +1,8 @@
 package com.pivotallabs.yellowpages.adapters;
 
+import roboguice.inject.ContextSingleton;
+
+import com.google.inject.Inject;
 import com.pivotallabs.yellowpages.R;
 import com.pivotallabs.yellowpages.api.YellowPagesApi;
 import com.pivotallabs.yellowpages.api.YellowPagesApi.Listing;
@@ -11,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+@ContextSingleton
 public class SearchResultAdapter extends ArrayAdapter<YellowPagesApi.Listing> {
 
+	@Inject
 	public SearchResultAdapter(Context context) {
 		super(context, R.layout.activity_search_row, -1);
 	}

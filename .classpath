@@ -11,5 +11,6 @@
 	<classpathentry exported="true" kind="lib" path="external/libs/guice-3.0-no_aop.jar"/>
 	<classpathentry exported="true" kind="lib" path="external/libs/javax.inject-1.jar"/>
 	<classpathentry exported="true" kind="lib" path="external/libs/roboguice-2.0.jar"/>
+	<classpathentry kind="lib" path="external/libs/mockito-all-1.9.5.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

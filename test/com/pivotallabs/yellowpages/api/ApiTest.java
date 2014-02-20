@@ -67,20 +67,4 @@ public class ApiTest {
 		}
 	}
 	
-	@Test
-	public void shouldFetchHttpResource(){
-		
-		String testHostname = "google.com";
-		Api baseApi = new Api("http", testHostname);
-		
-		Uri simpleUri = baseApi.getPath("/");
-
-		try {
-			byte[] data = baseApi.getResource(simpleUri);
-			
-			Assert.assertNotNull(data);
-		} catch (IOException e) {
-			Assert.fail(e.getMessage());
-		}
-	}
 }
