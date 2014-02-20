@@ -1,18 +1,18 @@
 package com.pivotallabs.testing;
 
+import static roboguice.RoboGuice.getInjector;
+import static roboguice.RoboGuice.newDefaultRoboModule;
+import static roboguice.RoboGuice.setBaseApplicationInjector;
+
+import java.lang.reflect.Method;
+
 import org.junit.runners.model.InitializationError;
 import org.robolectric.DefaultTestLifecycle;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.TestLifecycle;
 
-import java.lang.reflect.Method;
-
 import roboguice.RoboGuice;
-
-import static roboguice.RoboGuice.getInjector;
-import static roboguice.RoboGuice.newDefaultRoboModule;
-import static roboguice.RoboGuice.setBaseApplicationInjector;
 
 public class RobolectricTestRunnerWithInjection extends RobolectricTestRunner {
     public RobolectricTestRunnerWithInjection(Class<?> testClass) throws InitializationError {

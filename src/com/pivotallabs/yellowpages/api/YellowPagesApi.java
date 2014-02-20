@@ -86,12 +86,12 @@ public class YellowPagesApi extends Api {
 		}
 	}
 	
-	static class Response {
+	public static class Response {
 		public CallSummary summary = new CallSummary();
 		public Listing[] listings = new Listing[0];
 	}
 	
-	static class CallSummary {
+	public static class CallSummary {
 		public String what;
 		public String where;
 		public String latitude;
@@ -108,7 +108,7 @@ public class YellowPagesApi extends Api {
 		public String Prov;
 	}
 	
-	static class Listing {
+	public static class Listing {
 		public String id;
 		public String name;
 		public ListingAddress address = new ListingAddress(); // to avoid null pointers
@@ -123,14 +123,14 @@ public class YellowPagesApi extends Api {
 		
 	}
 	
-	static class ListingAddress {
+	public static class ListingAddress {
 		public String street;
 		public String city;
 		public String prov;
 		public String pcode;
 	}
 	
-	static class GeoLocation {
+	public static class GeoLocation {
 		public String latitude;
 		public String longitude;
 	}

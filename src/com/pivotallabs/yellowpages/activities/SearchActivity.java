@@ -1,22 +1,34 @@
 package com.pivotallabs.yellowpages.activities;
 
-import roboguice.activity.RoboActivity;
+import java.util.ArrayList;
+
+import roboguice.activity.RoboListActivity;
 import roboguice.inject.ContentView;
+import roboguice.inject.InjectView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.google.inject.Inject;
 import com.pivotallabs.yellowpages.R;
+import com.pivotallabs.yellowpages.api.YellowPagesApi;
 
 @ContentView(R.layout.activity_search)
-public class SearchActivity extends RoboActivity {
+public class SearchActivity extends RoboListActivity {
 
 	static final String WHAT_QUERY = "what";
 	static final String WHERE_QUERY = "where";
-	
+
 	public static Intent getStartIntent(Context context, String what, String where){
 		Intent start = new Intent(context, SearchActivity.class);
 		
@@ -32,13 +44,56 @@ public class SearchActivity extends RoboActivity {
 		context.startActivity(start);
 	}
 	
+	@Inject YellowPagesApi api;
+	@InjectView(android.R.id.list) ListView list;
+	@InjectView(android.R.id.empty) TextView empty;
+	@InjectView(R.id.progress) ProgressBar progress;
+	
+	private ArrayList<String> items;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.v(this.getPackageName(), "onCreate");
 		super.onCreate(savedInstanceState);
 		// Show the Up button in the action bar.
 		//setupActionBar();
+		
+		items = new ArrayList<String>();
+		items.add("Bam");
+		items.add("Sam");
+		items.add("Ram");
+		items.add("Lam");
+		items.add("Tam");
+		items.add("Dam");
+		items.add("Jam");
+		
+		Log.v(this.getPackageName(), "setListAdapter");
+		setListAdapter(new ArrayAdapter<String>(this, R.layout.activity_search_row, items));
+		
+		items.add("Test");
+		
+		ListView listView = getListView();
+		listView.setTextFilterEnabled(true);
+		
+		Log.v(this.getPackageName(), "onCreate FINISH");
 	}
-
+	
+	@Override
+	public void onContentChanged() {
+		// custom progress bar handling
+		
+		if( /* TODO get adapter */ true ){
+			ListAdapter adapter = null;
+			
+			if( adapter.getCount() > 0){
+				progress.setVisibility(View.GONE);
+			}
+		}
+		
+		// delegate to super
+		super.onContentChanged();
+	}
+	
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */
