@@ -9,5 +9,6 @@
     <string name="where_hint">Where are you looking?</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="search_activity_no_data">No data to display.</string>
+    <string name="title_activity_map">MapActivity</string>
 
 </resources>

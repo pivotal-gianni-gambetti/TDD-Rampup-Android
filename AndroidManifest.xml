@@ -1,25 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pivotallabs.yellowpages"
+    package="com.tddrampup"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.NETWORK" />
 
+    <!-- The following are required for google play services map functionality -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <!-- Not required for maps, but recommended -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
+        android:name="com.tddrampup.yellowpages.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.pivotallabs.yellowpages.App"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name="com.pivotallabs.yellowpages.activities.MainActivity"
-            android:label="@string/app_name" >
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBF6ss4X4cofQ9rd_iC-gX1CRr3iLFG2Bs" />
+
+        <activity android:name="com.tddrampup.yellowpages.activities.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,15 +40,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.pivotallabs.yellowpages.activities.SearchActivity"
-            android:label="@string/title_activity_search"
-            android:parentActivityName="com.pivotallabs.yellowpages.activities.MainActivity" >
+            android:name="com.tddrampup.yellowpages.activities.SearchActivity"
+            android:parentActivityName="com.tddrampup.yellowpages.activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pivotallabs.yellowpages.activities.MainActivity" />
+                android:value="com.tddrampup.yellowpages.activities.MainActivity" />
         </activity>
-        
+        <activity
+            android:name="com.tddrampup.yellowpages.activities.MapActivity"
+            android:label="@string/title_activity_map" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tddrampup.yellowpages.activities.SearchActivity" />
+        </activity>
     </application>
 
-    
 </manifest>
