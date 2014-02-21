@@ -47,11 +47,18 @@
                 android:value="com.tddrampup.yellowpages.activities.MainActivity" />
         </activity>
         <activity
-            android:name="com.tddrampup.yellowpages.activities.MapActivity"
+            android:name="com.tddrampup.yellowpages.activities.LocationMapActivity"
             android:label="@string/title_activity_map" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tddrampup.yellowpages.activities.SearchActivity" />
+        </activity>
+        <activity
+            android:name="com.tddrampup.yellowpages.activities.ClusterMapActivity"
+            android:label="@string/title_activity_map" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tddrampup.yellowpages.activities.MainActivity" />
         </activity>
     </application>
 

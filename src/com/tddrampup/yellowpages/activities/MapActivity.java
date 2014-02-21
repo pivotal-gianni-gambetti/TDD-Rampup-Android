@@ -2,8 +2,6 @@ package com.tddrampup.yellowpages.activities;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
-import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -12,47 +10,58 @@ import android.util.Log;
 import android.view.Menu;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.inject.Inject;
 import com.tddrampup.R;
-import com.tddrampup.yellowpages.injection.GoogleMapProvider;
+import com.tddrampup.yellowpages.ui.map.CameraUpdateWrapper;
 
 @ContentView(R.layout.activity_map)
-public class MapActivity extends RoboActivity {
-
-	public static Intent getStartIntent(Context context){
-		Intent intent = new Intent(context, MapActivity.class);
+public abstract class MapActivity extends RoboActivity {
+	
+	public interface MapProvider {
 		
-		return intent;
+		GoogleMap get(MapActivity activity);
+		
 	}
 	
-	public static void start(Context context){
-		Intent start = getStartIntent(context);
-		context.startActivity(start);
-	}
+	// I'm so sorry that we had to do this with the dependency
+	// injection framework, unfortunately, we're not so sure why
+	// we had to do this sort of stupid thing...but google maps
+	// just doesn't want to be setup during onCreate. :/
+	@Inject
+	MapProvider provider;
+	
+	GoogleMap map;
 	
 	@Inject
-	GoogleMapProvider mapProvider;
-	// "injected"
-	GoogleMap map;
+	CameraUpdateWrapper cameraUpdater;
 	
 	@Inject
 	LocationManager locationManager;
 	
 	@Inject
 	MapLocationListener listener;
-	
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// have to use weird injection to get this setup right.
-		map = mapProvider.get();
+		map = provider.get(this);
 		
 		map.setMyLocationEnabled(true);
 		map.setIndoorEnabled(true);
 		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+		
+		// set the default zoom level
+		float reasonableZoom = (map.getMaxZoomLevel() - map.getMinZoomLevel() ) * 2/3 + map.getMinZoomLevel();		
+		map.moveCamera(cameraUpdater.zoomTo(reasonableZoom));
 	}
 
+	protected void addMarker(double latitude, double longitude){
+		map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)));
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

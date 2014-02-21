@@ -1,27 +1,18 @@
 package com.tddrampup.yellowpages.injection;
 
-import roboguice.inject.ContextSingleton;
-import android.app.Activity;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import com.tddrampup.R;
+import com.tddrampup.yellowpages.activities.MapActivity;
+import com.tddrampup.yellowpages.activities.MapActivity.MapProvider;
 
-@ContextSingleton
-public class GoogleMapProvider implements Provider<GoogleMap>{
+@Singleton
+public class GoogleMapProvider implements MapProvider {
 
-	Activity currentActivity;
-	
-	@Inject
-	public GoogleMapProvider(Activity current) {
-		currentActivity = current;
-	}
-	
-	
 	@Override
-	public GoogleMap get() {
+	public GoogleMap get(MapActivity currentActivity) {
+				
 		MapFragment fragment = (MapFragment) currentActivity.getFragmentManager().findFragmentById(R.id.map);
 		
 		if(fragment == null){

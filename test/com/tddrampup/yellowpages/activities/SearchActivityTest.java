@@ -143,7 +143,7 @@ public class SearchActivityTest {
         Intent startedIntent = shadowActivity.getNextStartedActivity();
         
         Assert.assertNotNull(startedIntent);
-        Assert.assertEquals(startedIntent.getComponent().getClassName(), MapActivity.class.getName());
+        Assert.assertEquals(startedIntent.getComponent().getClassName(), LocationMapActivity.class.getName());
         
         Bundle extras = startedIntent.getExtras();
         

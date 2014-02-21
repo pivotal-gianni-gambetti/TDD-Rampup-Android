@@ -10,5 +10,6 @@
     <string name="title_activity_search">SearchActivity</string>
     <string name="search_activity_no_data">No data to display.</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="search_map">Map</string>
 
 </resources>

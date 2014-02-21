@@ -30,15 +30,12 @@ import com.tddrampup.yellowpages.api.YellowPagesApi.Response;
 @ContentView(R.layout.activity_search)
 public class SearchActivity extends RoboListActivity implements Listener<Response>, ErrorListener {
 
-	static final String WHAT_QUERY = "what";
-	static final String WHERE_QUERY = "where";
-
 	public static Intent getStartIntent(Context context, String what, String where){
 		Intent start = new Intent(context, SearchActivity.class);
 		
 		// params for the class
-		start.putExtra(WHAT_QUERY, what);
-		start.putExtra(WHERE_QUERY, where);
+		start.putExtra(MainActivity.WHAT_QUERY, what);
+		start.putExtra(MainActivity.WHERE_QUERY, where);
 		
 		return start;
 	}
@@ -66,8 +63,8 @@ public class SearchActivity extends RoboListActivity implements Listener<Respons
 		Log.v(this.getPackageName(), "onCreate");
 		super.onCreate(savedInstanceState);
 		
-		searchWhat = getIntent().getExtras().getString(WHAT_QUERY);
-		searchWhere = getIntent().getExtras().getString(WHERE_QUERY);
+		searchWhat = getIntent().getExtras().getString(MainActivity.WHAT_QUERY);
+		searchWhere = getIntent().getExtras().getString(MainActivity.WHERE_QUERY);
 
 		setListAdapter(adapter);
 
@@ -138,7 +135,10 @@ public class SearchActivity extends RoboListActivity implements Listener<Respons
 		
 		Listing item = adapter.getItem(position);
 		
-		MapActivity.start(this);
+		double latitude = Double.parseDouble(item.geoCode.latitude);
+		double longitude = Double.parseDouble(item.geoCode.longitude);
+		
+		LocationMapActivity.start(this, latitude, longitude);
 	}
 
 	@Override

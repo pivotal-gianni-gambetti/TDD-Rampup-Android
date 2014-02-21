@@ -15,9 +15,13 @@ import com.tddrampup.R;
 @ContentView(R.layout.activity_main)
 public class MainActivity extends RoboActivity implements OnClickListener {
 	
+	static final String WHAT_QUERY = "what";
+	static final String WHERE_QUERY = "where";
+	
 	@InjectView(R.id.what) EditText whatField;
 	@InjectView(R.id.where) EditText whereField;
 	@InjectView(R.id.start_search) Button search;
+	@InjectView(R.id.start_map) Button map;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +46,24 @@ public class MainActivity extends RoboActivity implements OnClickListener {
     		SearchActivity.start(this, what, where);
     	}
     }
+    
+    private void doMap(){
+    	String what = whatField.getText().toString();
+    	String where = whereField.getText().toString();
+    	
+    	if(what.length() > 0 && where.length() > 0){
+    		// TODO
+    	}
+    }
 
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()){
 			case R.id.start_search:
 				doSearch();
+				break;
+			case R.id.start_map:
+				doMap();
 				break;
 		}
 	}

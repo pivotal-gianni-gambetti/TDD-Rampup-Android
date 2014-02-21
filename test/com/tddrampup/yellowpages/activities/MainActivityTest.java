@@ -2,6 +2,7 @@ package com.tddrampup.yellowpages.activities;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -40,7 +41,7 @@ public class MainActivityTest {
         Intent startedIntent = shadowActivity.getNextStartedActivity();
         Assert.assertNull(startedIntent);
     }
-    
+
     @Test
     public void shouldPassSearchParamsToSearch_onSearchButtonClick(){
     	
@@ -55,13 +56,50 @@ public class MainActivityTest {
     	
     	// start the search activity
     	ShadowActivity shadowActivity = Robolectric.shadowOf_(activity);
-        Intent startedIntent = shadowActivity.getNextStartedActivity();
-        
-        Assert.assertNotNull(startedIntent);
-        Assert.assertEquals(startedIntent.getComponent().getClassName(), SearchActivity.class.getName());
-        
-        Bundle extras = startedIntent.getExtras();
-        Assert.assertEquals(what, extras.get(SearchActivity.WHAT_QUERY));
-        Assert.assertEquals(where, extras.get(SearchActivity.WHERE_QUERY));
+    	Intent startedIntent = shadowActivity.getNextStartedActivity();
+    	
+    	Assert.assertNotNull(startedIntent);
+    	Assert.assertEquals(startedIntent.getComponent().getClassName(), SearchActivity.class.getName());
+    	
+    	Bundle extras = startedIntent.getExtras();
+    	Assert.assertEquals(what, extras.get(MainActivity.WHAT_QUERY));
+    	Assert.assertEquals(where, extras.get(MainActivity.WHERE_QUERY));
+    }
+
+    @Test
+    public void shouldNotMap_onButtonPress_withEmptyText(){
+    	
+    	// click the search button
+    	activity.onClick(activity.map);
+    	
+    	// start the search activity
+    	ShadowActivity shadowActivity = Robolectric.shadowOf_(activity);
+    	Intent startedIntent = shadowActivity.getNextStartedActivity();
+    	Assert.assertNull(startedIntent);
+    }
+    
+    @Test
+    @Ignore
+    public void shouldPassSearchParamsToMap_onSearchButtonClick(){
+    	
+    	String what = "what";
+    	String where = "where";
+    	
+    	activity.whatField.setText(what);
+    	activity.whereField.setText(where);
+    	
+    	// click the search button
+    	activity.onClick(activity.map);
+    	
+    	// start the search activity
+    	ShadowActivity shadowActivity = Robolectric.shadowOf_(activity);
+    	Intent startedIntent = shadowActivity.getNextStartedActivity();
+    	
+    	Assert.assertNotNull(startedIntent);
+    	Assert.assertEquals(startedIntent.getComponent().getClassName(), MapActivity.class.getName());
+    	
+    	Bundle extras = startedIntent.getExtras();
+    	Assert.assertEquals(what, extras.get(MainActivity.WHAT_QUERY));
+    	Assert.assertEquals(where, extras.get(MainActivity.WHERE_QUERY));
     }
 }
