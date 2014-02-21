@@ -3,18 +3,30 @@ package com.tddrampup.yellowpages.activities;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.util.ActivityController;
 
 import android.content.Intent;
 
+import com.google.inject.Inject;
 import com.tddrampup.testing.RobolectricTestRunnerWithInjection;
+import com.tddrampup.yellowpages.api.YellowPagesApi.Listing;
+import com.tddrampup.yellowpages.api.YellowPagesApi.Response;
+import com.tddrampup.yellowpages.ui.map.CameraUpdateWrapper;
 
 @RunWith(RobolectricTestRunnerWithInjection.class)
 public class ClusterMapActivityTest {
 
 	ActivityController<ClusterMapActivity> controller;
 	ClusterMapActivity activity;
+
+	double testLatitude = 43.672574;
+	double testLongitude = -79.287992;
+	Listing testListing;
+	
+	@Inject
+	CameraUpdateWrapper cameraWrapper;
 	
 	@Before
 	public void setup(){
@@ -23,11 +35,41 @@ public class ClusterMapActivityTest {
 		controller = Robolectric.buildActivity(ClusterMapActivity.class).withIntent(start);
 		
 		activity = controller.get();
+
+		testListing = new Listing();
+		
+		testListing.address.city = "Toronto";
+		testListing.address.pcode = "M4E 1E9";
+		testListing.address.prov = "ON";
+		testListing.address.street = "King";
+		
+		testListing.distance = "1.0";
+		testListing.geoCode.latitude = Double.toString(testLatitude);
+		testListing.geoCode.longitude = Double.toString(testLongitude);
+		
+		testListing.id = "abc1123";
+		testListing.isParent = false;
+		testListing.parentId = "";
 	}
 	
 	@Test
 	public void shouldHaveAMapFragment(){
 		controller.create().start().resume();		
+	}
+	
+	@Test
+	public void shouldProperlyCalculateAverageLatitudeAndLongitude_basedOnResponse(){
+		controller.create().start().resume();
+		
+		Response resp = new Response();
+		resp.listings = new Listing[1];
+		resp.listings[0] = testListing;
+		
+		//activity.cameraUpdater;
+		
+		activity.onResponse(resp);
+		
+		Mockito.verify(cameraWrapper).centerAt(testLatitude, testLongitude);
 	}
 	
 }

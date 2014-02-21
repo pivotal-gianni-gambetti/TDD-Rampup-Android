@@ -5,7 +5,6 @@ import org.mockito.Mockito;
 
 import com.android.volley.RequestQueue;
 import com.google.inject.AbstractModule;
-import com.tddrampup.testing.fake.FakeCameraUpdateWrapper;
 import com.tddrampup.testing.fake.FakeGoogleMapProvider;
 import com.tddrampup.toolbox.UserGuid;
 import com.tddrampup.yellowpages.activities.MapActivity.MapProvider;
@@ -16,7 +15,7 @@ public class TestApplicationModule extends AbstractModule {
     protected void configure() {
     	bind(RequestQueue.class).toInstance(Mockito.mock(RequestQueue.class));
     	bind(UserGuid.class).toInstance(new UserGuid("This is a test user guid"));
-    	bind(CameraUpdateWrapper.class).to(FakeCameraUpdateWrapper.class);
+    	bind(CameraUpdateWrapper.class).toInstance(Mockito.mock(CameraUpdateWrapper.class));
     	bind(MapProvider.class).to(FakeGoogleMapProvider.class);
     }
 }

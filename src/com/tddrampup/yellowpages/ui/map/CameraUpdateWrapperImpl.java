@@ -7,8 +7,8 @@ import com.google.android.gms.maps.model.LatLng;
 public class CameraUpdateWrapperImpl implements CameraUpdateWrapper{
 
 	@Override
-	public CameraUpdate newLatLng(LatLng latLng) {
-		return CameraUpdateFactory.newLatLng(latLng);
+	public CameraUpdate centerAt(double lat, double lng) {
+		return CameraUpdateFactory.newLatLng(new LatLng(lat, lng));
 	}
 
 	@Override

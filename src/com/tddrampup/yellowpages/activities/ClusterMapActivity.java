@@ -5,13 +5,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.inject.Inject;
 import com.tddrampup.yellowpages.api.YellowPagesApi;
+import com.tddrampup.yellowpages.api.YellowPagesApi.Listing;
 import com.tddrampup.yellowpages.api.YellowPagesApi.Response;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 public class ClusterMapActivity extends MapActivity implements Listener<Response>, ErrorListener{
 
@@ -66,8 +70,25 @@ public class ClusterMapActivity extends MapActivity implements Listener<Response
 
 	@Override
 	public void onResponse(Response response) {
-		// TODO Auto-generated method stub
+		double averageLatitude = 0.0;
+		double averageLongitude = 0.0;
 		
+		for (Listing iter : response.listings) {
+			double latitude = Double.parseDouble(iter.geoCode.latitude);
+			double longitude = Double.parseDouble(iter.geoCode.longitude);
+			
+			averageLatitude += latitude;
+			averageLongitude += longitude;
+			
+			addMarker(latitude, longitude);
+		}
+		
+		averageLatitude = averageLatitude / response.listings.length;
+		averageLongitude = averageLongitude / response.listings.length;
+		
+		Log.v(this.getClass().getName(), "Lat/Lng : " +averageLatitude+ " / " +averageLongitude+ " and length : " + response.listings.length);
+		
+		map.animateCamera(cameraUpdater.centerAt(averageLatitude, averageLongitude));
 	}
 	
 }

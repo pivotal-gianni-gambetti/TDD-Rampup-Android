@@ -34,7 +34,7 @@ public class LocationMapActivity extends MapActivity {
 		double longitude = getIntent().getDoubleExtra(LON_PARAM, 0);
 		
 		addMarker(latitude, longitude);
-		map.moveCamera(cameraUpdater.newLatLng(new LatLng(latitude, longitude)));		
+		map.moveCamera(cameraUpdater.centerAt(latitude, longitude));		
 	}
 	
 }

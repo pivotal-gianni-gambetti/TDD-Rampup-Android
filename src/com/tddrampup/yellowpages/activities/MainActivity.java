@@ -28,6 +28,7 @@ public class MainActivity extends RoboActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         
         search.setOnClickListener(this);
+        map.setOnClickListener(this);
     }
 
 
@@ -52,7 +53,7 @@ public class MainActivity extends RoboActivity implements OnClickListener {
     	String where = whereField.getText().toString();
     	
     	if(what.length() > 0 && where.length() > 0){
-    		// TODO
+    		ClusterMapActivity.start(this, what, where);
     	}
     }
 

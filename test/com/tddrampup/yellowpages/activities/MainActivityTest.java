@@ -2,7 +2,6 @@ package com.tddrampup.yellowpages.activities;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -10,11 +9,9 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.util.ActivityController;
 
-import com.tddrampup.yellowpages.activities.MainActivity;
-import com.tddrampup.yellowpages.activities.SearchActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 @RunWith(RobolectricTestRunner.class)
 public class MainActivityTest {
@@ -34,7 +31,7 @@ public class MainActivityTest {
     public void shouldNotSearch_onButtonPress_withEmptyText(){
     	
     	// click the search button
-    	activity.onClick(activity.search);
+    	activity.search.performClick();
     	
     	// start the search activity
     	ShadowActivity shadowActivity = Robolectric.shadowOf_(activity);
@@ -52,7 +49,7 @@ public class MainActivityTest {
     	activity.whereField.setText(where);
     	
     	// click the search button
-    	activity.onClick(activity.search);
+    	activity.search.performClick();
     	
     	// start the search activity
     	ShadowActivity shadowActivity = Robolectric.shadowOf_(activity);
@@ -70,7 +67,7 @@ public class MainActivityTest {
     public void shouldNotMap_onButtonPress_withEmptyText(){
     	
     	// click the search button
-    	activity.onClick(activity.map);
+    	activity.map.performClick();
     	
     	// start the search activity
     	ShadowActivity shadowActivity = Robolectric.shadowOf_(activity);
@@ -79,8 +76,7 @@ public class MainActivityTest {
     }
     
     @Test
-    @Ignore
-    public void shouldPassSearchParamsToMap_onSearchButtonClick(){
+    public void shouldPassSearchParamsToMap_onMapButtonClick(){
     	
     	String what = "what";
     	String where = "where";
@@ -89,14 +85,14 @@ public class MainActivityTest {
     	activity.whereField.setText(where);
     	
     	// click the search button
-    	activity.onClick(activity.map);
+    	activity.map.performClick();
     	
     	// start the search activity
     	ShadowActivity shadowActivity = Robolectric.shadowOf_(activity);
     	Intent startedIntent = shadowActivity.getNextStartedActivity();
     	
     	Assert.assertNotNull(startedIntent);
-    	Assert.assertEquals(startedIntent.getComponent().getClassName(), MapActivity.class.getName());
+    	Assert.assertEquals(startedIntent.getComponent().getClassName(), ClusterMapActivity.class.getName());
     	
     	Bundle extras = startedIntent.getExtras();
     	Assert.assertEquals(what, extras.get(MainActivity.WHAT_QUERY));
