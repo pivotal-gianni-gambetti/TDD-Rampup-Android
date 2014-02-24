@@ -44,6 +44,14 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int adUnitId=0x7f010002;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int buttonBarButtonStyle=0x7f010012;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int buttonBarStyle=0x7f010011;
         /** <p>Must be a floating point value, such as "<code>1.2</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -164,6 +172,7 @@ containing a value of this type.
         public static final int zOrderOnTop=0x7f010010;
     }
     public static final class color {
+        public static final int black_overlay=0x7f04000a;
         public static final int common_action_bar_splitter=0x7f040009;
         /**  Sign-in Button Colors 
          */
@@ -176,8 +185,8 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f040006;
         public static final int common_signin_btn_light_text_focused=0x7f040007;
         public static final int common_signin_btn_light_text_pressed=0x7f040005;
-        public static final int common_signin_btn_text_dark=0x7f04000a;
-        public static final int common_signin_btn_text_light=0x7f04000b;
+        public static final int common_signin_btn_text_dark=0x7f04000b;
+        public static final int common_signin_btn_text_light=0x7f04000c;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -221,15 +230,21 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f02001c;
     }
     public static final class id {
-        public static final int action_settings=0x7f05000b;
-        public static final int business_title=0x7f050009;
+        public static final int action_settings=0x7f050011;
+        public static final int business_title=0x7f05000a;
+        public static final int city_and_province=0x7f05000f;
+        public static final int details_view=0x7f05000c;
+        public static final int error=0x7f05000b;
         public static final int hybrid=0x7f050004;
-        public static final int map=0x7f05000a;
+        public static final int map=0x7f050010;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int progress=0x7f050008;
+        public static final int progress=0x7f050009;
         public static final int satellite=0x7f050002;
+        public static final int start_map=0x7f050008;
         public static final int start_search=0x7f050007;
+        public static final int store_name=0x7f05000d;
+        public static final int street_address=0x7f05000e;
         public static final int terrain=0x7f050003;
         public static final int what=0x7f050005;
         public static final int where=0x7f050006;
@@ -242,12 +257,14 @@ containing a value of this type.
         public static final int activity_map=0x7f030001;
         public static final int activity_search=0x7f030002;
         public static final int activity_search_row=0x7f030003;
-        public static final int map_fragment=0x7f030004;
+        public static final int activity_store_details=0x7f030004;
+        public static final int map_fragment=0x7f030005;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;
         public static final int map=0x7f0a0001;
         public static final int search=0x7f0a0002;
+        public static final int store_details=0x7f0a0003;
     }
     public static final class string {
         public static final int action_settings=0x7f06001b;
@@ -275,6 +292,7 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f060014;
+        public static final int city_and_province=0x7f060028;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -346,11 +364,17 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f060013;
+        public static final int dummy_button=0x7f060025;
+        public static final int dummy_content=0x7f060026;
+        public static final int empty=0x7f060029;
         public static final int hello_world=0x7f06001c;
         public static final int search_activity_no_data=0x7f060021;
         public static final int search_button=0x7f06001d;
+        public static final int search_map=0x7f060023;
+        public static final int title_activity_fullscreen=0x7f060024;
         public static final int title_activity_map=0x7f060022;
         public static final int title_activity_search=0x7f060020;
+        public static final int title_activity_store_details=0x7f060027;
         public static final int what_hint=0x7f06001e;
         public static final int where_hint=0x7f06001f;
     }
@@ -381,6 +405,10 @@ containing a value of this type.
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f090001;
+        public static final int ButtonBar=0x7f090003;
+        public static final int ButtonBarButton=0x7f090004;
+        public static final int FullscreenActionBarStyle=0x7f090005;
+        public static final int FullscreenTheme=0x7f090002;
     }
     public static final class styleable {
         /** Attributes that can be used with a AdsAttrs.
@@ -458,6 +486,46 @@ containing a value of this type.
           @attr name com.tddrampup:adUnitId
         */
         public static final int AdsAttrs_adUnitId = 2;
+        /** 
+         Declare custom theme attributes that allow changing which styles are
+         used for button bars depending on the API level.
+         ?android:attr/buttonBarStyle is new as of API 11 so this is
+         necessary to support previous API levels.
+    
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #ButtonBarContainerTheme_buttonBarButtonStyle com.tddrampup:buttonBarButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #ButtonBarContainerTheme_buttonBarStyle com.tddrampup:buttonBarStyle}</code></td><td></td></tr>
+           </table>
+           @see #ButtonBarContainerTheme_buttonBarButtonStyle
+           @see #ButtonBarContainerTheme_buttonBarStyle
+         */
+        public static final int[] ButtonBarContainerTheme = {
+            0x7f010011, 0x7f010012
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.tddrampup.R.attr#buttonBarButtonStyle}
+          attribute's value can be found in the {@link #ButtonBarContainerTheme} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.tddrampup:buttonBarButtonStyle
+        */
+        public static final int ButtonBarContainerTheme_buttonBarButtonStyle = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.tddrampup.R.attr#buttonBarStyle}
+          attribute's value can be found in the {@link #ButtonBarContainerTheme} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.tddrampup:buttonBarStyle
+        */
+        public static final int ButtonBarContainerTheme_buttonBarStyle = 0;
         /** Attributes that can be used with a MapAttrs.
            <p>Includes the following attributes:</p>
            <table>

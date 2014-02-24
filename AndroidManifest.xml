@@ -60,6 +60,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tddrampup.yellowpages.activities.MainActivity" />
         </activity>
+        <activity
+            android:name="com.tddrampup.yellowpages.activities.StoreDetailsActivity"
+            android:label="@string/title_activity_store_details" >
+        </activity>
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.google.gson.annotations.SerializedName;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.tddrampup.toolbox.GsonRequest;
@@ -42,7 +43,7 @@ public class YellowPagesApi extends Api {
 	}
 	
 	// TODO Refactor WHERE + UID into location + user identifier providers respectively
-	public Request<Response> findBusiness(int page, String what, String where, Listener<Response> listener, ErrorListener errorListener) {
+	public Request<FindBusinessResponse> findBusiness(int page, String what, String where, Listener<FindBusinessResponse> listener, ErrorListener errorListener) {
 		
 		StringBuilder validation = new StringBuilder();
 		
@@ -76,10 +77,52 @@ public class YellowPagesApi extends Api {
 		
 		Log.v(TAG, path.toString());
 		
-		return new GsonRequest<Response>(path.toString(), Response.class, listener, errorListener);
+		return new GsonRequest<FindBusinessResponse>(path.toString(), FindBusinessResponse.class, listener, errorListener);
 	}
 	
-	public static class Response {
+	public Request<BusinessDetailsResponse> getBusinessDetails(String listingId, String businessName, String city, String province, Listener<BusinessDetailsResponse> listener, ErrorListener errorListener) {
+		
+		StringBuilder validation = new StringBuilder();
+		
+		if(listingId == null){
+			validation.append("Argument 'listingId' must not be null\n");
+		}
+		
+		if(businessName == null){
+			validation.append("Argument 'businessName' must not be null\n");
+		}
+		
+		if(city == null){
+			validation.append("Argument 'city' must not be null\n");
+		}
+		
+		if(province == null){
+			validation.append("Argument 'province' must not be null\n");
+		}
+		
+		if(validation.length() > 0){
+			throw new IllegalArgumentException(validation.toString());
+		}
+		
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("listingId", listingId);
+		params.put("bus-name", businessName);
+		params.put("city", city);
+		params.put("prov", province);
+		
+		params.put("UID", guid.getGuid());
+		
+		params.put("fmt", "json");
+		params.put("lang", "en");
+		
+		Uri path = getPath("/GetBusinessDetails/", params);
+		
+		Log.v(TAG, path.toString());
+		
+		return new GsonRequest<BusinessDetailsResponse>(path.toString(), BusinessDetailsResponse.class, listener, errorListener);
+	}
+	
+	public static class FindBusinessResponse {
 		public CallSummary summary = new CallSummary();
 		public Listing[] listings = new Listing[0];
 	}
@@ -126,6 +169,36 @@ public class YellowPagesApi extends Api {
 	public static class GeoLocation {
 		public String latitude;
 		public String longitude;
+	}
+	
+	public static class PhoneInformation {
+		@SerializedName("npa") public String areaCode;
+		@SerializedName("nxx") public String firstThree;
+		@SerializedName("num") public String lastFour;
+		@SerializedName("dispNum") public String displayNumber;
+		public String type;
+	}
+	
+	public static class Products {
+		public String[] webUrl;
+		public Profile[] profiles;
+	}
+	
+	public static class Profile {
+		public Keywords keywords;
+	}
+	
+	public static class Keywords {
+		@SerializedName("OpenHrs") public String[] storeHours; 
+	}
+	
+	public static class BusinessDetailsResponse {
+		public String id;
+		public String name;
+		public ListingAddress address = new ListingAddress(); // to avoid null pointers
+		public GeoLocation geoCode = new GeoLocation();
+		public PhoneInformation[] phones;
+		public Products products;
 	}
 	
 }

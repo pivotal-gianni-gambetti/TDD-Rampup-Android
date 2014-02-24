@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.gms.maps.model.LatLng;
-
 public class LocationMapActivity extends MapActivity {
 
 	static final String LAT_PARAM = "latitude";

@@ -11,5 +11,10 @@
     <string name="search_activity_no_data">No data to display.</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="search_map">Map</string>
-
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_store_details">StoreDetailsActivity</string>
+	<string name="city_and_province">%1$s, %2$s</string>
+	<string name="empty"></string>
 </resources>

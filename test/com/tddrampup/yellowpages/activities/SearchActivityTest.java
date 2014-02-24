@@ -22,10 +22,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.google.inject.Inject;
 import com.tddrampup.testing.RobolectricTestRunnerWithInjection;
-import com.tddrampup.yellowpages.activities.MapActivity;
-import com.tddrampup.yellowpages.activities.SearchActivity;
+import com.tddrampup.toolbox.Util;
+import com.tddrampup.yellowpages.api.YellowPagesApi.FindBusinessResponse;
 import com.tddrampup.yellowpages.api.YellowPagesApi.Listing;
-import com.tddrampup.yellowpages.api.YellowPagesApi.Response;
 
 @RunWith(RobolectricTestRunnerWithInjection.class)
 public class SearchActivityTest {
@@ -60,6 +59,7 @@ public class SearchActivityTest {
 		testListing.geoCode.longitude = "-79.287992";
 		
 		testListing.id = "abc1123";
+		testListing.name = "Test Name";
 		testListing.isParent = false;
 		testListing.parentId = "";
 	}
@@ -78,9 +78,7 @@ public class SearchActivityTest {
 		// spinner should not be showing
 		
 		// build response.
-		Response resp = new Response();
-		resp.listings = new Listing[1];
-		resp.listings[0] = new Listing();
+		FindBusinessResponse resp = buildResponse(testListing);
 		
 		// send the response
 		activity.onResponse(resp);
@@ -113,9 +111,7 @@ public class SearchActivityTest {
 	public void shouldNotShowErrorMessage_whenReceivingNetworkRequestAndHasResults(){
 		
 		// build response.
-		Response resp = new Response();
-		resp.listings = new Listing[1];
-		resp.listings[0] = testListing;
+		FindBusinessResponse resp = buildResponse(testListing);
 		
 		// send the response
 		activity.onResponse(resp);
@@ -130,7 +126,7 @@ public class SearchActivityTest {
 	}
 	
 	@Test
-	public void shouldStartMapActivity_onItemClick(){
+	public void shouldStartDetailsActivity_onItemClick(){
 		
 		// send the response
 		activity.onResponse( buildResponse(testListing) );
@@ -143,15 +139,12 @@ public class SearchActivityTest {
         Intent startedIntent = shadowActivity.getNextStartedActivity();
         
         Assert.assertNotNull(startedIntent);
-        Assert.assertEquals(startedIntent.getComponent().getClassName(), LocationMapActivity.class.getName());
-        
-        Bundle extras = startedIntent.getExtras();
-        
-		
+        //Assert.assertEquals(startedIntent.getComponent().getClassName(), LocationMapActivity.class.getName());
+        Assert.assertEquals(startedIntent.getComponent().getClassName(), StoreDetailsActivity.class.getName());
 	}
 	
-	private Response buildResponse(Listing ... listings){
-		Response resp = new Response();
+	private FindBusinessResponse buildResponse(Listing ... listings){
+		FindBusinessResponse resp = new FindBusinessResponse();
 		resp.listings = listings;
 		
 		return resp;

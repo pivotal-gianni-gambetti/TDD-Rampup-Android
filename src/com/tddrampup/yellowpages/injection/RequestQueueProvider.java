@@ -14,6 +14,7 @@ public class RequestQueueProvider implements Provider<RequestQueue> {
 	@Inject Activity currentActivity;
 	
 	@Override
+	@ContextSingleton
 	public RequestQueue get() {
 		return Volley.newRequestQueue(currentActivity);
 	}

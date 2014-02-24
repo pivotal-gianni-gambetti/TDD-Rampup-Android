@@ -17,18 +17,20 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.google.inject.Inject;
 import com.tddrampup.R;
+import com.tddrampup.toolbox.Util;
 import com.tddrampup.yellowpages.adapters.SearchResultAdapter;
 import com.tddrampup.yellowpages.api.YellowPagesApi;
+import com.tddrampup.yellowpages.api.YellowPagesApi.FindBusinessResponse;
 import com.tddrampup.yellowpages.api.YellowPagesApi.Listing;
-import com.tddrampup.yellowpages.api.YellowPagesApi.Response;
 
 @ContentView(R.layout.activity_search)
-public class SearchActivity extends RoboListActivity implements Listener<Response>, ErrorListener {
+public class SearchActivity extends RoboListActivity implements Listener<FindBusinessResponse>, ErrorListener {
 
 	public static Intent getStartIntent(Context context, String what, String where){
 		Intent start = new Intent(context, SearchActivity.class);
@@ -93,7 +95,7 @@ public class SearchActivity extends RoboListActivity implements Listener<Respons
 	}
 	
 	private void makeNextApiRequest(){
-		Request<Response> resp = api.findBusiness(searchPage, searchWhat, searchWhere, this, this);
+		Request<FindBusinessResponse> resp = api.findBusiness(searchPage, searchWhat, searchWhere, this, this);
 		searchPage++;
 		resp.setTag(this);
 		queue.add(resp);
@@ -135,10 +137,12 @@ public class SearchActivity extends RoboListActivity implements Listener<Respons
 		
 		Listing item = adapter.getItem(position);
 		
-		double latitude = Double.parseDouble(item.geoCode.latitude);
-		double longitude = Double.parseDouble(item.geoCode.longitude);
+		//double latitude = Double.parseDouble(item.geoCode.latitude);
+		//double longitude = Double.parseDouble(item.geoCode.longitude);
 		
-		LocationMapActivity.start(this, latitude, longitude);
+		//LocationMapActivity.start(this, latitude, longitude);
+		
+		StoreDetailsActivity.start(this, item);
 	}
 
 	@Override
@@ -165,24 +169,14 @@ public class SearchActivity extends RoboListActivity implements Listener<Respons
 		// TODO assuming that the adapter displays the empty message for us.
 		empty.setText("An error occured while execuing: " + error.getMessage());
 		
-		Log(Log.ERROR, this.getClass().getName(), error);
+		Util.Log(Log.ERROR, this.getClass().getName(), error);
 	}
 
 	@Override
-	public void onResponse(Response response) {
+	public void onResponse(FindBusinessResponse response) {
 		progress.setVisibility(View.GONE);			
 		adapter.addAll(response.listings);
 		adapter.notifyDataSetChanged();
 	}
 
-	public static void Log( int priority, String tag, VolleyError error){
-		Log.println( priority, tag, "Error with volley query: " + error.networkResponse.statusCode);
-
-		for(String key : error.networkResponse.headers.keySet()){
-			Log.println( priority, tag, key + " : " + error.networkResponse.headers.get(key) );
-		}
-
-		Log.println( priority, tag, new String(error.networkResponse.data ) );
-	}
-	
 }

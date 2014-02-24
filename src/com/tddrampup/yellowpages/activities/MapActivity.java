@@ -49,6 +49,7 @@ public abstract class MapActivity extends RoboActivity {
 
 		map = provider.get(this);
 		
+		
 		map.setMyLocationEnabled(true);
 		map.setIndoorEnabled(true);
 		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -59,7 +60,28 @@ public abstract class MapActivity extends RoboActivity {
 	}
 
 	protected void addMarker(double latitude, double longitude){
-		map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)));
+		addMarker(latitude, longitude, null);
+	}
+	
+	protected void addMarker(double latitude, double longitude, String title){
+		addMarker(latitude, longitude, title, null);
+	}
+	
+	protected void addMarker(double latitude, double longitude, String title, String snippet){
+		
+		MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude));
+		
+		if(title != null){
+			marker.title(title);
+		}
+		
+		if(snippet != null){
+			marker.snippet(snippet);
+		}
+		
+		marker.snippet("this is a snippet\nwith some mork <strong>text</strong>");
+		
+		map.addMarker(marker);
 	}
 	
 	@Override
@@ -82,6 +104,14 @@ public abstract class MapActivity extends RoboActivity {
 		locationManager.removeUpdates(listener);
 		
 		super.onPause();
+	}
+	
+	@Override
+	protected void onStop() {
+		
+		map.stopAnimation();
+		
+		super.onStop();
 	}
 	
 	static class MapLocationListener implements LocationListener {

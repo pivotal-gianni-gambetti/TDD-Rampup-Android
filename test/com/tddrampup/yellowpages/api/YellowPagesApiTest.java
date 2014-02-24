@@ -9,9 +9,7 @@ import android.net.Uri;
 import com.android.volley.Request;
 import com.google.inject.Inject;
 import com.tddrampup.testing.RobolectricTestRunnerWithInjection;
-import com.tddrampup.yellowpages.api.ApiException;
-import com.tddrampup.yellowpages.api.YellowPagesApi;
-import com.tddrampup.yellowpages.api.YellowPagesApi.Response;
+import com.tddrampup.yellowpages.api.YellowPagesApi.FindBusinessResponse;
 
 @RunWith(RobolectricTestRunnerWithInjection.class)
 public class YellowPagesApiTest {
@@ -36,7 +34,7 @@ public class YellowPagesApiTest {
 
 	@Test
 	public void shouldNotReturnNull(){
-		Request<Response> resquest = api.findBusiness(0, "what", "where", null, null);
+		Request<FindBusinessResponse> resquest = api.findBusiness(0, "what", "where", null, null);
 
 		Assert.assertNotNull(resquest);
 	}
