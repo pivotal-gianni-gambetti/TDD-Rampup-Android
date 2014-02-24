@@ -18,72 +18,68 @@ import com.tddrampup.yellowpages.ui.map.CameraUpdateWrapper;
 
 @ContentView(R.layout.activity_map)
 public abstract class MapActivity extends RoboActivity {
-	
+
 	public interface MapProvider {
-		
+
 		GoogleMap get(MapActivity activity);
-		
+
 	}
-	
+
 	// I'm so sorry that we had to do this with the dependency
 	// injection framework, unfortunately, we're not so sure why
 	// we had to do this sort of stupid thing...but google maps
 	// just doesn't want to be setup during onCreate. :/
-	@Inject
-	MapProvider provider;
-	
+	@Inject MapProvider provider;
+
 	GoogleMap map;
-	
-	@Inject
-	CameraUpdateWrapper cameraUpdater;
-	
-	@Inject
-	LocationManager locationManager;
-	
-	@Inject
-	MapLocationListener listener;
-		
+
+	@Inject CameraUpdateWrapper cameraUpdater;
+
+	@Inject LocationManager locationManager;
+
+	@Inject MapLocationListener listener;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		map = provider.get(this);
-		
-		
+
 		map.setMyLocationEnabled(true);
 		map.setIndoorEnabled(true);
 		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-		
+
 		// set the default zoom level
-		float reasonableZoom = (map.getMaxZoomLevel() - map.getMinZoomLevel() ) * 2/3 + map.getMinZoomLevel();		
+		float reasonableZoom = (map.getMaxZoomLevel() - map.getMinZoomLevel())
+				* 2 / 3 + map.getMinZoomLevel();
 		map.moveCamera(cameraUpdater.zoomTo(reasonableZoom));
 	}
 
-	protected void addMarker(double latitude, double longitude){
+	protected void addMarker(double latitude, double longitude) {
 		addMarker(latitude, longitude, null);
 	}
-	
-	protected void addMarker(double latitude, double longitude, String title){
+
+	protected void addMarker(double latitude, double longitude, String title) {
 		addMarker(latitude, longitude, title, null);
 	}
-	
-	protected void addMarker(double latitude, double longitude, String title, String snippet){
-		
-		MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude));
-		
-		if(title != null){
+
+	protected void addMarker(double latitude, double longitude, String title,
+			String snippet) {
+
+		MarkerOptions marker = new MarkerOptions().position(new LatLng(
+				latitude, longitude));
+
+		if (title != null) {
 			marker.title(title);
 		}
-		
-		if(snippet != null){
+
+		if (snippet != null) {
 			marker.snippet(snippet);
 		}
-		
-		marker.snippet("this is a snippet\nwith some mork <strong>text</strong>");
-		
+
 		map.addMarker(marker);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -94,50 +90,53 @@ public abstract class MapActivity extends RoboActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
+
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+				0, listener);
+		locationManager.requestLocationUpdates(
+				LocationManager.NETWORK_PROVIDER, 0, 0, listener);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		locationManager.removeUpdates(listener);
-		
+
 		super.onPause();
 	}
-	
+
 	@Override
 	protected void onStop() {
-		
+
 		map.stopAnimation();
-		
+
 		super.onStop();
 	}
-	
+
 	static class MapLocationListener implements LocationListener {
 
 		@Override
 		public void onLocationChanged(Location location) {
-			Log.v(this.getClass().getName(), "Location changed: " + location.toString());
+			Log.v(this.getClass().getName(),
+					"Location changed: " + location.toString());
 		}
 
 		@Override
 		public void onProviderDisabled(String provider) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void onProviderEnabled(String provider) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 	}
 }
