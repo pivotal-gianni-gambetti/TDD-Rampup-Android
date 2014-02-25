@@ -14,6 +14,7 @@ import android.os.Bundle;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.model.Marker;
@@ -72,7 +73,7 @@ public class ClusterMapActivityTest {
 	}
 
 	@Test
-	public void shouldProperlyCalculateAverageLatitudeAndLongitude_basedOnResponse() {
+	public void shouldBoundASinglePointCorrectly_OnResponse() {
 		controller.create().start().resume();
 
 		Mockito.verify(queue)
@@ -82,11 +83,41 @@ public class ClusterMapActivityTest {
 		resp.listings = new Listing[1];
 		resp.listings[0] = testListing;
 
-		// activity.cameraUpdater;
+		activity.onResponse(resp);
+
+		Mockito.verify(cameraWrapper).bounds(testLatitude, testLongitude,
+				testLatitude, testLongitude);
+	}
+
+	@Test
+	public void shouldBoundAllListings() {
+		controller.create().start().resume();
+
+		Mockito.verify(queue)
+				.add(Mockito.<Request<FindBusinessResponse>> any());
+
+		FindBusinessResponse resp = new FindBusinessResponse();
+		resp.listings = new Listing[4];
+
+		int index = 0;
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 2; j++) {
+				testListing.geoCode.latitude = Double.toString(i * 2 - 1);
+				testListing.geoCode.longitude = Double.toString(j * 2 - 1);
+				resp.listings[index] = testListing.clone();
+				index++;
+			}
+		}
+
+		resp.listings[0] = testListing;
 
 		activity.onResponse(resp);
 
-		Mockito.verify(cameraWrapper).centerAt(testLatitude, testLongitude);
+		Mockito.verify(cameraWrapper).bounds(1, 1, -1, -1);
+
+		GoogleMap map = mapProvider.get(activity);
+
+		Mockito.verify(map).animateCamera(Mockito.<CameraUpdate> any());
 	}
 
 	@Test

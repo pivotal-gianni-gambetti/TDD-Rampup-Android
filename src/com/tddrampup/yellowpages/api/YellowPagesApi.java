@@ -154,7 +154,7 @@ public class YellowPagesApi extends Api {
 		public String Prov;
 	}
 
-	public static class Listing {
+	public static class Listing implements Cloneable {
 		public String id;
 		public String name;
 		public ListingAddress address = new ListingAddress(); // to avoid null
@@ -168,18 +168,50 @@ public class YellowPagesApi extends Api {
 		// This exists, but we don't know wtf it does.
 		// public Object? content;
 
+		@Override
+		public Listing clone() {
+			Listing copy = new Listing();
+			copy.id = id;
+			copy.name = name;
+			copy.address = address.clone();
+			copy.geoCode = geoCode.clone();
+			copy.distance = distance;
+			copy.parentId = parentId;
+			copy.isParent = isParent;
+
+			return copy;
+		}
 	}
 
-	public static class ListingAddress {
+	public static class ListingAddress implements Cloneable {
 		public String street;
 		public String city;
 		public String prov;
 		public String pcode;
+
+		@Override
+		public ListingAddress clone() {
+			ListingAddress copy = new ListingAddress();
+			copy.street = street;
+			copy.city = city;
+			copy.prov = prov;
+			copy.pcode = pcode;
+			return copy;
+		}
 	}
 
-	public static class GeoLocation {
+	public static class GeoLocation implements Cloneable {
 		public String latitude;
 		public String longitude;
+
+		@Override
+		public GeoLocation clone() {
+			GeoLocation copy = new GeoLocation();
+			copy.latitude = latitude;
+			copy.longitude = longitude;
+
+			return copy;
+		}
 
 		public LatLng convertToLatLng() {
 			try {

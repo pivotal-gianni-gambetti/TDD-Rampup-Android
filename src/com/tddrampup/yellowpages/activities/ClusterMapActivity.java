@@ -7,7 +7,6 @@ import roboguice.inject.InjectExtra;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 
 import com.android.volley.Request;
@@ -78,16 +77,18 @@ public class ClusterMapActivity extends MapActivity implements
 
 	@Override
 	public void onResponse(FindBusinessResponse response) {
-		double averageLatitude = 0.0;
-		double averageLongitude = 0.0;
+		double minLatitude = 180, maxLatitude = -180;
+		double minLongitude = 180, maxLongitude = -180;
 
 		for (Listing storeListing : response.listings) {
 			double latitude = Double.parseDouble(storeListing.geoCode.latitude);
 			double longitude = Double
 					.parseDouble(storeListing.geoCode.longitude);
 
-			averageLatitude += latitude;
-			averageLongitude += longitude;
+			minLatitude = Math.min(minLatitude, latitude);
+			maxLatitude = Math.max(maxLatitude, latitude);
+			maxLongitude = Math.max(maxLongitude, longitude);
+			minLongitude = Math.min(minLongitude, longitude);
 
 			addMarker(latitude, longitude, storeListing.name,
 					storeListing.address.street);
@@ -98,15 +99,8 @@ public class ClusterMapActivity extends MapActivity implements
 			listingsByTitleAndSnippet.put(key, storeListing);
 		}
 
-		averageLatitude = averageLatitude / response.listings.length;
-		averageLongitude = averageLongitude / response.listings.length;
-
-		Log.v(this.getClass().getName(), "Lat/Lng : " + averageLatitude + " / "
-				+ averageLongitude + " and length : "
-				+ response.listings.length);
-
-		map.animateCamera(cameraUpdater.centerAt(averageLatitude,
-				averageLongitude));
+		map.animateCamera(cameraUpdater.bounds(maxLatitude, maxLongitude,
+				minLatitude, minLongitude));
 	}
 
 	@Override
