@@ -1,53 +1,63 @@
 package com.tddrampup.yellowpages.activities;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import roboguice.inject.InjectExtra;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.model.Marker;
 import com.google.inject.Inject;
 import com.tddrampup.yellowpages.api.YellowPagesApi;
 import com.tddrampup.yellowpages.api.YellowPagesApi.FindBusinessResponse;
 import com.tddrampup.yellowpages.api.YellowPagesApi.Listing;
 
-public class ClusterMapActivity extends MapActivity implements Listener<FindBusinessResponse>, ErrorListener{
+public class ClusterMapActivity extends MapActivity implements
+		Listener<FindBusinessResponse>, ErrorListener,
+		OnInfoWindowClickListener {
 
-	public static Intent getStartIntent(Context context, String what, String where){
+	public static Intent getStartIntent(Context context, String what,
+			String where) {
 		Intent intent = new Intent(context, ClusterMapActivity.class);
-		
+
 		intent.putExtra(MainActivity.WHAT_QUERY, what);
 		intent.putExtra(MainActivity.WHERE_QUERY, where);
-		
+
 		return intent;
 	}
-	
-	public static void start(Context context, String what, String where){
+
+	public static void start(Context context, String what, String where) {
 		Intent start = getStartIntent(context, what, where);
 		context.startActivity(start);
 	}
 
-	@Inject
-	RequestQueue queue;
-	
-	@Inject
-	YellowPagesApi api;
-	
-	String what;
-	String where;
-	
+	@Inject RequestQueue queue;
+
+	@Inject YellowPagesApi api;
+
+	@InjectExtra(value = MainActivity.WHAT_QUERY) String what;
+	@InjectExtra(value = MainActivity.WHERE_QUERY) String where;
+
+	Map<Pair<String, String>, Listing> listingsByTitleAndSnippet = new HashMap<Pair<String, String>, Listing>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		what = getIntent().getExtras().getString(MainActivity.WHAT_QUERY);
-		where = getIntent().getExtras().getString(MainActivity.WHERE_QUERY);
-		
-		Request<FindBusinessResponse> request = api.findBusiness(1, what, where, this, this);
+
+		map.setOnInfoWindowClickListener(this);
+
+		Request<FindBusinessResponse> request = api.findBusiness(1, what,
+				where, this, this);
 		request.setTag(this);
 		queue.add(request);
 	}
@@ -56,37 +66,57 @@ public class ClusterMapActivity extends MapActivity implements Listener<FindBusi
 	protected void onStop() {
 
 		queue.cancelAll(this);
-		
+
 		super.onStop();
 	}
-	
+
 	@Override
 	public void onErrorResponse(VolleyError error) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onResponse(FindBusinessResponse response) {
 		double averageLatitude = 0.0;
 		double averageLongitude = 0.0;
-		
-		for (Listing iter : response.listings) {
-			double latitude = Double.parseDouble(iter.geoCode.latitude);
-			double longitude = Double.parseDouble(iter.geoCode.longitude);
-			
+
+		for (Listing storeListing : response.listings) {
+			double latitude = Double.parseDouble(storeListing.geoCode.latitude);
+			double longitude = Double
+					.parseDouble(storeListing.geoCode.longitude);
+
 			averageLatitude += latitude;
 			averageLongitude += longitude;
-			
-			addMarker(latitude, longitude, iter.name);
+
+			addMarker(latitude, longitude, storeListing.name,
+					storeListing.address.street);
+
+			Pair<String, String> key = Pair.<String, String> create(
+					storeListing.name, storeListing.address.street);
+
+			listingsByTitleAndSnippet.put(key, storeListing);
 		}
-		
+
 		averageLatitude = averageLatitude / response.listings.length;
 		averageLongitude = averageLongitude / response.listings.length;
-		
-		Log.v(this.getClass().getName(), "Lat/Lng : " +averageLatitude+ " / " +averageLongitude+ " and length : " + response.listings.length);
-		
-		map.animateCamera(cameraUpdater.centerAt(averageLatitude, averageLongitude));
+
+		Log.v(this.getClass().getName(), "Lat/Lng : " + averageLatitude + " / "
+				+ averageLongitude + " and length : "
+				+ response.listings.length);
+
+		map.animateCamera(cameraUpdater.centerAt(averageLatitude,
+				averageLongitude));
 	}
-	
+
+	@Override
+	public void onInfoWindowClick(Marker arg0) {
+		Pair<String, String> key = Pair.<String, String> create(
+				arg0.getTitle(), arg0.getSnippet());
+
+		Listing listing = listingsByTitleAndSnippet.get(key);
+
+		StoreDetailsActivity.start(this, listing);
+	}
+
 }
