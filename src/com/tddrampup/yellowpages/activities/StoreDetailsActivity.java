@@ -75,6 +75,7 @@ public class StoreDetailsActivity extends MapActivity implements
 	@InjectView(R.id.street_address) TextView streetAddress;
 	@InjectView(R.id.city_and_province) TextView cityAndProvince;
 	@InjectView(R.id.phone_number) TextView phoneNumber;
+	@InjectView(R.id.website) TextView webUrl;
 	@InjectView(R.id.progress) ProgressBar loadingSpinner;
 	@InjectView(R.id.error) TextView errorMessage;
 	@InjectView(R.id.store_hours) LinearLayout storeHoursContainer;
@@ -144,6 +145,8 @@ public class StoreDetailsActivity extends MapActivity implements
 
 		setPhoneNumber(response);
 
+		setWebUrl(response);
+
 		updateMap(response);
 	}
 
@@ -196,6 +199,14 @@ public class StoreDetailsActivity extends MapActivity implements
 			}
 
 			phoneNumber.setText(displayNumber);
+		}
+	}
+
+	private void setWebUrl(BusinessDetailsResponse response) {
+		if (response.products.webUrl.length > 0) {
+			webUrl.setText(response.products.webUrl[0]);
+		} else {
+			Log.v(this.getClass().getName(), "No web url for this store.");
 		}
 	}
 

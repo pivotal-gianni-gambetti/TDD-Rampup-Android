@@ -59,6 +59,7 @@ public class StoreDetailsActivityTest {
 		response.phones[1].type = "secondary";
 		response.geoCode.latitude = "23.77";
 		response.geoCode.longitude = "69.98";
+		response.products.webUrl = new String[] { "http://www.google.ca" };
 
 		start = StoreDetailsActivity.getStartIntent(Robolectric.application,
 				"i d", "A name 123", "City@Place", "ab(._.)cd");
@@ -178,6 +179,8 @@ public class StoreDetailsActivityTest {
 				.contains(response.address.city));
 		Assert.assertTrue(activity.cityAndProvince.getText().toString()
 				.contains(response.address.prov));
+		Assert.assertEquals(response.products.webUrl[0], activity.webUrl
+				.getText().toString());
 	}
 
 	@Test
