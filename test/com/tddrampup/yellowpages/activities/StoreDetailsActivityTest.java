@@ -19,6 +19,7 @@ import android.view.View;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -223,6 +224,20 @@ public class StoreDetailsActivityTest {
 		// indirectly verify that the map has been moved to these coordinates
 		Mockito.verify(cameraUpdater).centerAt(latLng.latitude,
 				latLng.longitude);
+	}
+
+	@Test
+	public void shouldMoveCameraToStoreLocation() {
+		controller.create().start().resume();
+		activity.onResponse(response);
+		activity.onMyLocationButtonClick();
+
+		LatLng latLng = response.geoCode.convertToLatLng();
+		GoogleMap map = mapsProvider.get(activity);
+
+		Mockito.verify(cameraUpdater, Mockito.times(2)).centerAt(
+				latLng.latitude, latLng.longitude);
+		Mockito.verify(map).animateCamera(Mockito.<CameraUpdate> any());
 	}
 
 	@Test

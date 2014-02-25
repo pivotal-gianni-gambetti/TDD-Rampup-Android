@@ -19,18 +19,21 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.tddrampup.R;
 import com.tddrampup.toolbox.Util;
 import com.tddrampup.yellowpages.api.YellowPagesApi;
 import com.tddrampup.yellowpages.api.YellowPagesApi.BusinessDetailsResponse;
+import com.tddrampup.yellowpages.api.YellowPagesApi.GeoLocation;
 import com.tddrampup.yellowpages.api.YellowPagesApi.Listing;
 import com.tddrampup.yellowpages.api.YellowPagesApi.PhoneInformation;
 
 @ContentView(R.layout.activity_store_details)
 public class StoreDetailsActivity extends MapActivity implements
-		Listener<BusinessDetailsResponse>, ErrorListener {
+		Listener<BusinessDetailsResponse>, ErrorListener,
+		OnMyLocationButtonClickListener {
 
 	private static final String TAG = StoreDetailsActivity.class.getName();
 
@@ -80,6 +83,8 @@ public class StoreDetailsActivity extends MapActivity implements
 	@Inject YellowPagesApi api;
 	@Inject RequestQueue queue;
 
+	private GeoLocation storeLocation;
+
 	@InjectExtra(value = ID_PARAM) String storeId;
 	@InjectExtra(value = NAME_PARAM) String storeName;
 	@InjectExtra(value = CITY_PARAM) String storeCity;
@@ -90,6 +95,7 @@ public class StoreDetailsActivity extends MapActivity implements
 		super.onCreate(savedInstanceState);
 
 		Bundle extras = getIntent().getExtras();
+		map.setOnMyLocationButtonClickListener(this);
 
 		Request<BusinessDetailsResponse> resp = api.getBusinessDetails(storeId,
 				storeName, storeCity, storeProvince, this, this);
@@ -133,11 +139,20 @@ public class StoreDetailsActivity extends MapActivity implements
 
 		Log.v(this.getClass().getName(), new Gson().toJson(response));
 
+		storeLocation = response.geoCode;
 		setStoreHours(response);
 
 		setPhoneNumber(response);
 
 		updateMap(response);
+	}
+
+	@Override
+	public boolean onMyLocationButtonClick() {
+		double latitude = Double.parseDouble(storeLocation.latitude);
+		double longitude = Double.parseDouble(storeLocation.longitude);
+		map.animateCamera(cameraUpdater.centerAt(latitude, longitude));
+		return true;
 	}
 
 	private void updateMap(BusinessDetailsResponse response) {

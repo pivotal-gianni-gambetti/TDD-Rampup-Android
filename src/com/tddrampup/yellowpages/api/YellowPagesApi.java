@@ -9,6 +9,7 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -179,6 +180,17 @@ public class YellowPagesApi extends Api {
 	public static class GeoLocation {
 		public String latitude;
 		public String longitude;
+
+		public LatLng convertToLatLng() {
+			try {
+				return new LatLng(Double.parseDouble(latitude),
+						Double.parseDouble(longitude));
+			} catch (NumberFormatException exception) {
+				Log.d(this.getClass().getName(),
+						"Failure converting GeoLocation to a LatLng", exception);
+				return null;
+			}
+		}
 	}
 
 	public static class PhoneInformation {
