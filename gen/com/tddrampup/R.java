@@ -230,22 +230,25 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f02001c;
     }
     public static final class id {
-        public static final int action_settings=0x7f050011;
+        public static final int action_settings=0x7f050014;
         public static final int business_title=0x7f05000a;
         public static final int city_and_province=0x7f05000f;
         public static final int details_view=0x7f05000c;
         public static final int error=0x7f05000b;
         public static final int hybrid=0x7f050004;
-        public static final int map=0x7f050010;
+        public static final int map=0x7f050013;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
+        public static final int phone_number=0x7f050010;
         public static final int progress=0x7f050009;
         public static final int satellite=0x7f050002;
         public static final int start_map=0x7f050008;
         public static final int start_search=0x7f050007;
+        public static final int store_hours=0x7f050012;
         public static final int store_name=0x7f05000d;
         public static final int street_address=0x7f05000e;
         public static final int terrain=0x7f050003;
+        public static final int website=0x7f050011;
         public static final int what=0x7f050005;
         public static final int where=0x7f050006;
     }
@@ -364,6 +367,7 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f060013;
+        public static final int details_api_error=0x7f06002a;
         public static final int dummy_button=0x7f060025;
         public static final int dummy_content=0x7f060026;
         public static final int empty=0x7f060029;

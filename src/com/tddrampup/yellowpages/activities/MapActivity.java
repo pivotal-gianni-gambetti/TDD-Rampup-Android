@@ -19,6 +19,8 @@ import com.tddrampup.yellowpages.ui.map.CameraUpdateWrapper;
 @ContentView(R.layout.activity_map)
 public abstract class MapActivity extends RoboActivity {
 
+	static final String TAG = MapActivity.class.getName();
+
 	public interface MapProvider {
 
 		GoogleMap get(MapActivity activity);
@@ -41,18 +43,10 @@ public abstract class MapActivity extends RoboActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.v(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 
-		map = provider.get(this);
-
-		map.setMyLocationEnabled(true);
-		map.setIndoorEnabled(true);
-		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-		// set the default zoom level
-		float reasonableZoom = (map.getMaxZoomLevel() - map.getMinZoomLevel())
-				* 2 / 3 + map.getMinZoomLevel();
-		map.moveCamera(cameraUpdater.zoomTo(reasonableZoom));
+		setupMap();
 	}
 
 	protected void addMarker(double latitude, double longitude) {
@@ -89,17 +83,36 @@ public abstract class MapActivity extends RoboActivity {
 
 	@Override
 	protected void onResume() {
+		Log.v(TAG, "onResume");
 		super.onResume();
 
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
-				0, listener);
-		locationManager.requestLocationUpdates(
-				LocationManager.NETWORK_PROVIDER, 0, 0, listener);
+		setupMap();
+
+		// locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+		// 0, 0, listener);
+		// locationManager.requestLocationUpdates(
+		// LocationManager.NETWORK_PROVIDER, 0, 0, listener);
+	}
+
+	private void setupMap() {
+		if (false) {
+			map = provider.get(this);
+
+			// map.setMyLocationEnabled(true);
+			// map.setIndoorEnabled(true);
+			// map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+			// set the default zoom level
+			float reasonableZoom = (map.getMaxZoomLevel() - map
+					.getMinZoomLevel()) * 2 / 3 + map.getMinZoomLevel();
+
+			// map.moveCamera(cameraUpdater.zoomTo(reasonableZoom));
+		}
 	}
 
 	@Override
 	protected void onPause() {
-		locationManager.removeUpdates(listener);
+		// locationManager.removeUpdates(listener);
 
 		super.onPause();
 	}
@@ -107,7 +120,7 @@ public abstract class MapActivity extends RoboActivity {
 	@Override
 	protected void onStop() {
 
-		map.stopAnimation();
+		map = null;
 
 		super.onStop();
 	}

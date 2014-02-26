@@ -164,13 +164,25 @@ public class ClusterMapActivityTest {
 	@Test
 	public void shouldAttachSomethingToMap_onInfoWindowClickListener() {
 
-		controller.create();
+		controller.create().start().resume();
 
 		GoogleMap map = mapProvider.get(activity);
 
 		Mockito.verify(map).setOnInfoWindowClickListener(
 				Mockito.<OnInfoWindowClickListener> any());
 
+	}
+
+	@Test
+	public void shouldNotCrash_withoutGeoCode() {
+		controller.create().start().resume();
+
+		FindBusinessResponse resp = new FindBusinessResponse();
+		resp.listings = new Listing[1];
+		resp.listings[0] = testListing;
+		testListing.geoCode = null;
+
+		activity.onResponse(resp);
 	}
 
 }

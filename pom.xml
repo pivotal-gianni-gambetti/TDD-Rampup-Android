@@ -84,7 +84,7 @@
 			<!-- Google play services -->
 			<groupId>com.google.android.gms</groupId>
 			<artifactId>google-play-services</artifactId>
-			<version>4</version>
+			<version>11</version>
 			<type>apklib</type>
 		</dependency>
 
