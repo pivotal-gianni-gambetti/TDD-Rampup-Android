@@ -119,4 +119,17 @@ public class MainActivityTest {
 		Assert.assertEquals(1, shadowNotificationManager.getAllNotifications()
 				.size());
 	}
+
+	@Test
+	public void shouldNavigateToSearchNearMe_onNearMeButtonClick() {
+		activity.nearMe.performClick();
+
+		// start the search activity
+		ShadowActivity shadowActivity = Robolectric.shadowOf_(activity);
+		Intent startedIntent = shadowActivity.getNextStartedActivity();
+
+		Assert.assertNotNull(startedIntent);
+		Assert.assertEquals(startedIntent.getComponent().getClassName(),
+				SearchNearMeActivity.class.getName());
+	}
 }

@@ -24,6 +24,7 @@ public class MainActivity extends RoboActivity implements OnClickListener {
 	@InjectView(R.id.what) EditText whatField;
 	@InjectView(R.id.where) EditText whereField;
 	@InjectView(R.id.start_search) Button search;
+	@InjectView(R.id.near_me) Button nearMe;
 	@InjectView(R.id.start_map) Button map;
 
 	// for notification stuff
@@ -36,6 +37,7 @@ public class MainActivity extends RoboActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 
 		search.setOnClickListener(this);
+		nearMe.setOnClickListener(this);
 		map.setOnClickListener(this);
 		notification.setOnClickListener(this);
 	}
@@ -54,6 +56,10 @@ public class MainActivity extends RoboActivity implements OnClickListener {
 		if (what.length() > 0 && where.length() > 0) {
 			SearchActivity.start(this, what, where);
 		}
+	}
+
+	private void doSearchNearMe() {
+		SearchNearMeActivity.start(this);
 	}
 
 	private void doMap() {
@@ -75,6 +81,9 @@ public class MainActivity extends RoboActivity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.start_search:
 			doSearch();
+			break;
+		case R.id.near_me:
+			doSearchNearMe();
 			break;
 		case R.id.start_map:
 			doMap();

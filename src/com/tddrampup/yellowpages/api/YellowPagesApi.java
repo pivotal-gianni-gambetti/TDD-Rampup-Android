@@ -3,6 +3,7 @@ package com.tddrampup.yellowpages.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
@@ -44,8 +45,25 @@ public class YellowPagesApi extends Api {
 		return super.getPath(path, newParams);
 	}
 
-	// TODO Refactor WHERE + UID into location + user identifier providers
-	// respectively
+	public Request<FindBusinessResponse> findBusiness(int page, String what,
+			Location where, Listener<FindBusinessResponse> listener,
+			ErrorListener errorListener) {
+
+		if (where == null) {
+			// to validate all the parameters at once.
+			return findBusiness(page, what, (String) null, listener,
+					errorListener);
+		} else {
+
+			String formattedWhere = "cZ" + where.getLongitude() + ","
+					+ where.getLatitude();
+
+			return findBusiness(page, what, formattedWhere, listener,
+					errorListener);
+		}
+
+	}
+
 	public Request<FindBusinessResponse> findBusiness(int page, String what,
 			String where, Listener<FindBusinessResponse> listener,
 			ErrorListener errorListener) {

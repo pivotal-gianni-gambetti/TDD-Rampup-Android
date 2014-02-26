@@ -35,8 +35,8 @@
         android:id="@+id/start_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/where"
         android:layout_alignParentRight="true"
+        android:layout_below="@+id/where"
         android:layout_marginTop="52dp"
         android:text="@string/search_button" />
 
@@ -44,16 +44,25 @@
         android:id="@+id/start_map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/where"
         android:layout_alignParentLeft="true"
+        android:layout_below="@+id/where"
         android:layout_marginTop="52dp"
         android:text="@string/search_map" />
+
+    <Button
+        android:id="@+id/near_me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/where"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52dp"
+        android:text="@string/search_near_me" />
 
     <Button
         android:id="@+id/launch_notification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/start_search"
+        android:layout_below="@+id/near_me"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="52dp"
         android:text="Push Notification" />

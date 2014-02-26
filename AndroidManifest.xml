@@ -66,8 +66,16 @@
         </activity>
         <activity
             android:name="com.tddrampup.yellowpages.activities.NotificationDetailsActivity"
-            android:label="@string/title_activity_notification_details" 
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/title_activity_notification_details" >
+        </activity>
+        <activity
+            android:name="com.tddrampup.yellowpages.activities.SearchNearMeActivity"
+            android:label="@string/title_activity_search_near_me"
+            android:parentActivityName="com.tddrampup.yellowpages.activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tddrampup.yellowpages.activities.MainActivity" />
         </activity>
     </application>
 

@@ -19,5 +19,7 @@
     <string name="empty"></string>
     <string name="details_api_error">An error occurred retrieving the store details.</string>
     <string name="title_activity_notification_details">NotificationDetailsActivity</string>
+    <string name="title_activity_search_near_me">SearchNearMeActivity</string>
+    <string name="search_near_me">Near Me</string>
 
 </resources>

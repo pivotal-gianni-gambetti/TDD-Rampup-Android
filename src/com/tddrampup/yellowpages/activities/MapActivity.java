@@ -2,11 +2,7 @@ package com.tddrampup.yellowpages.activities;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -34,10 +30,6 @@ public abstract class MapActivity extends RoboActivity {
 	GoogleMap map;
 
 	@Inject CameraUpdateWrapper cameraUpdater;
-
-	@Inject LocationManager locationManager;
-
-	@Inject MapLocationListener listener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,56 +79,4 @@ public abstract class MapActivity extends RoboActivity {
 		return true;
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
-				0, listener);
-		locationManager.requestLocationUpdates(
-				LocationManager.NETWORK_PROVIDER, 0, 0, listener);
-	}
-
-	@Override
-	protected void onPause() {
-		locationManager.removeUpdates(listener);
-
-		super.onPause();
-	}
-
-	@Override
-	protected void onStop() {
-
-		map.stopAnimation();
-
-		super.onStop();
-	}
-
-	static class MapLocationListener implements LocationListener {
-
-		@Override
-		public void onLocationChanged(Location location) {
-			Log.v(this.getClass().getName(),
-					"Location changed: " + location.toString());
-		}
-
-		@Override
-		public void onProviderDisabled(String provider) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void onProviderEnabled(String provider) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void onStatusChanged(String provider, int status, Bundle extras) {
-			// TODO Auto-generated method stub
-
-		}
-
-	}
 }

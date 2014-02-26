@@ -14,16 +14,15 @@ import com.tddrampup.yellowpages.api.YellowPagesApi.FindBusinessResponse;
 @RunWith(RobolectricTestRunnerWithInjection.class)
 public class YellowPagesApiTest {
 
-	@Inject
-	YellowPagesApi api;
+	@Inject YellowPagesApi api;
 
 	@Test
-	public void shouldValidateParameters() throws ApiException{
-		try{
-			api.findBusiness(-1, null, null, null, null);
+	public void shouldValidateParameters() throws ApiException {
+		try {
+			api.findBusiness(-1, null, (String) null, null, null);
 
 			throw new Error("Should fail with validation error");
-		}catch( IllegalArgumentException exception ){
+		} catch (IllegalArgumentException exception) {
 			// pass
 
 			Assert.assertTrue(exception.getMessage().contains("page"));
@@ -33,17 +32,20 @@ public class YellowPagesApiTest {
 	}
 
 	@Test
-	public void shouldNotReturnNull(){
-		Request<FindBusinessResponse> resquest = api.findBusiness(0, "what", "where", null, null);
+	public void shouldNotReturnNull() {
+		Request<FindBusinessResponse> resquest = api.findBusiness(0, "what",
+				"where", null, null);
 
 		Assert.assertNotNull(resquest);
 	}
 
 	@Test
-	public void shouldAddApiKeyToParams(){
+	public void shouldAddApiKeyToParams() {
 		Uri uri = api.getPath("");
 
-		Assert.assertEquals(uri.getQueryParameter(YellowPagesApi.API_KEY_QUERY_PARAM), YellowPagesApi.YELLOW_API_KEY);
+		Assert.assertEquals(
+				uri.getQueryParameter(YellowPagesApi.API_KEY_QUERY_PARAM),
+				YellowPagesApi.YELLOW_API_KEY);
 	}
 
 }
