@@ -81,6 +81,11 @@ public class ClusterMapActivity extends MapActivity implements
 		double minLongitude = 180, maxLongitude = -180;
 
 		for (Listing storeListing : response.listings) {
+
+			if (storeListing.geoCode == null) {
+				continue;
+			}
+
 			double latitude = Double.parseDouble(storeListing.geoCode.latitude);
 			double longitude = Double
 					.parseDouble(storeListing.geoCode.longitude);

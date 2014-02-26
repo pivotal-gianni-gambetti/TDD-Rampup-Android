@@ -173,4 +173,20 @@ public class ClusterMapActivityTest {
 
 	}
 
+	@Test
+	public void shouldNotCrashWithNullGeoCode() {
+
+		controller.create().start().resume();
+
+		FindBusinessResponse resp = new FindBusinessResponse();
+		resp.listings = new Listing[1];
+		resp.listings[0] = testListing;
+		testListing.geoCode = null;
+
+		// activity.cameraUpdater;
+
+		activity.onResponse(resp);
+
+	}
+
 }
