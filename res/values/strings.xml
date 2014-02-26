@@ -15,7 +15,9 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_store_details">StoreDetailsActivity</string>
-	<string name="city_and_province">%1$s, %2$s</string>
-	<string name="empty"></string>
-	<string name="details_api_error">An error occurred retrieving the store details.</string>
+    <string name="city_and_province">%1$s, %2$s</string>
+    <string name="empty"></string>
+    <string name="details_api_error">An error occurred retrieving the store details.</string>
+    <string name="title_activity_notification_details">NotificationDetailsActivity</string>
+
 </resources>

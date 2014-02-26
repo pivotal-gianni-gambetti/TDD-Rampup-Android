@@ -64,6 +64,11 @@
             android:name="com.tddrampup.yellowpages.activities.StoreDetailsActivity"
             android:label="@string/title_activity_store_details" >
         </activity>
+        <activity
+            android:name="com.tddrampup.yellowpages.activities.NotificationDetailsActivity"
+            android:label="@string/title_activity_notification_details" 
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
