@@ -1,6 +1,7 @@
 package com.tddrampup.yellowpages.api;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -9,12 +10,20 @@ import android.net.Uri;
 import com.android.volley.Request;
 import com.google.inject.Inject;
 import com.tddrampup.testing.RobolectricTestRunnerWithInjection;
+import com.tddrampup.toolbox.UserGuid;
 import com.tddrampup.yellowpages.api.YellowPagesApi.FindBusinessResponse;
 
 @RunWith(RobolectricTestRunnerWithInjection.class)
 public class YellowPagesApiTest {
 
-	@Inject YellowPagesApi api;
+	@Inject UserGuid guid;
+
+	YellowPagesApi api;
+
+	@Before
+	public void setup() {
+		api = new YellowPagesApi(guid);
+	}
 
 	@Test
 	public void shouldValidateParameters() throws ApiException {

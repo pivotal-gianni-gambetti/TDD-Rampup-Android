@@ -230,28 +230,30 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f02001c;
     }
     public static final class id {
-        public static final int action_settings=0x7f050017;
-        public static final int business_title=0x7f05000d;
-        public static final int city_and_province=0x7f050012;
-        public static final int content=0x7f05000b;
-        public static final int details_view=0x7f05000f;
-        public static final int error=0x7f05000e;
+        public static final int action_settings=0x7f050019;
+        public static final int business_title=0x7f05000f;
+        public static final int city_and_province=0x7f050014;
+        public static final int content=0x7f05000c;
+        public static final int details_view=0x7f050011;
+        public static final int error=0x7f050010;
         public static final int hybrid=0x7f050004;
-        public static final int launch_notification=0x7f050009;
-        public static final int map=0x7f050016;
+        public static final int launch_notification=0x7f05000a;
+        public static final int map=0x7f050018;
+        public static final int near_me=0x7f050009;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int phone_number=0x7f050013;
-        public static final int progress=0x7f05000c;
+        public static final int phone_number=0x7f050015;
+        public static final int progress=0x7f05000d;
         public static final int satellite=0x7f050002;
+        public static final int search=0x7f05000e;
         public static final int start_map=0x7f050008;
         public static final int start_search=0x7f050007;
-        public static final int store_hours=0x7f050015;
-        public static final int store_name=0x7f050010;
-        public static final int street_address=0x7f050011;
+        public static final int store_hours=0x7f050017;
+        public static final int store_name=0x7f050012;
+        public static final int street_address=0x7f050013;
         public static final int terrain=0x7f050003;
-        public static final int title=0x7f05000a;
-        public static final int website=0x7f050014;
+        public static final int title=0x7f05000b;
+        public static final int website=0x7f050016;
         public static final int what=0x7f050005;
         public static final int where=0x7f050006;
     }
@@ -263,16 +265,18 @@ containing a value of this type.
         public static final int activity_map=0x7f030001;
         public static final int activity_notification_details=0x7f030002;
         public static final int activity_search=0x7f030003;
-        public static final int activity_search_row=0x7f030004;
-        public static final int activity_store_details=0x7f030005;
-        public static final int map_fragment=0x7f030006;
+        public static final int activity_search_near_me=0x7f030004;
+        public static final int activity_search_row=0x7f030005;
+        public static final int activity_store_details=0x7f030006;
+        public static final int map_fragment=0x7f030007;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;
         public static final int map=0x7f0a0001;
         public static final int notification_details=0x7f0a0002;
         public static final int search=0x7f0a0003;
-        public static final int store_details=0x7f0a0004;
+        public static final int search_near_me=0x7f0a0004;
+        public static final int store_details=0x7f0a0005;
     }
     public static final class string {
         public static final int action_settings=0x7f06001b;
@@ -380,10 +384,12 @@ containing a value of this type.
         public static final int search_activity_no_data=0x7f060021;
         public static final int search_button=0x7f06001d;
         public static final int search_map=0x7f060023;
+        public static final int search_near_me=0x7f06002d;
         public static final int title_activity_fullscreen=0x7f060024;
         public static final int title_activity_map=0x7f060022;
         public static final int title_activity_notification_details=0x7f06002b;
         public static final int title_activity_search=0x7f060020;
+        public static final int title_activity_search_near_me=0x7f06002c;
         public static final int title_activity_store_details=0x7f060027;
         public static final int what_hint=0x7f06001e;
         public static final int where_hint=0x7f06001f;

@@ -1,6 +1,5 @@
 package com.tddrampup.testing;
 
-import static roboguice.RoboGuice.getInjector;
 import static roboguice.RoboGuice.newDefaultRoboModule;
 import static roboguice.RoboGuice.setBaseApplicationInjector;
 
@@ -15,28 +14,34 @@ import org.robolectric.TestLifecycle;
 import roboguice.RoboGuice;
 
 public class RobolectricTestRunnerWithInjection extends RobolectricTestRunner {
-    public RobolectricTestRunnerWithInjection(Class<?> testClass) throws InitializationError {
-        super(testClass);
-    }
 
-    @Override
-    protected Class<? extends TestLifecycle> getTestLifecycleClass() {
-        return TestLifeCycleWithInjection.class;
-    }
+	public RobolectricTestRunnerWithInjection(Class<?> testClass)
+			throws InitializationError {
+		super(testClass);
+	}
 
-    public static class TestLifeCycleWithInjection extends DefaultTestLifecycle {
+	@Override
+	protected Class<? extends TestLifecycle> getTestLifecycleClass() {
+		return TestLifeCycleWithInjection.class;
+	}
 
-        private final TestApplicationModule module = new TestApplicationModule();
+	public static class TestLifeCycleWithInjection extends DefaultTestLifecycle {
 
-        @Override
-        public void beforeTest(Method method) {
-            super.beforeTest(method);
-            setBaseApplicationInjector(Robolectric.application, RoboGuice.DEFAULT_STAGE, newDefaultRoboModule(Robolectric.application), module);
-        }
+		private final TestApplicationModule module = new TestApplicationModule();
 
-        @Override
-        public void prepareTest(Object test) {
-            getInjector(Robolectric.application).injectMembers(test);
-        }
-    }
+		@Override
+		public void beforeTest(Method method) {
+			super.beforeTest(method);
+			setBaseApplicationInjector(Robolectric.application,
+					RoboGuice.DEFAULT_STAGE,
+					newDefaultRoboModule(Robolectric.application), module);
+		}
+
+		@Override
+		public void prepareTest(Object test) {
+
+			RoboGuice.getBaseApplicationInjector(Robolectric.application)
+					.injectMembers(test);
+		}
+	}
 }

@@ -12,7 +12,6 @@ import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
@@ -35,8 +34,12 @@ public class SearchNearMeActivity extends MapActivity implements
 		Listener<FindBusinessResponse>, ErrorListener,
 		OnMyLocationChangeListener, OnQueryTextListener {
 
+	public static Intent getStartIntent(Context context) {
+		return new Intent(context, SearchNearMeActivity.class);
+	}
+
 	public static void start(Context context) {
-		Intent start = new Intent(context, SearchNearMeActivity.class);
+		Intent start = SearchNearMeActivity.getStartIntent(context);
 		context.startActivity(start);
 	}
 
@@ -49,15 +52,11 @@ public class SearchNearMeActivity extends MapActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setupActionBar();
 
-		// locationClient = new LocationClient(this, this, this);
-
 		map.setMyLocationEnabled(true);
 		map.setOnMyLocationChangeListener(this);
-
 		search.setOnQueryTextListener(this);
 	}
 
@@ -66,7 +65,7 @@ public class SearchNearMeActivity extends MapActivity implements
 	 */
 	private void setupActionBar() {
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		// getActionBar().setDisplayHomeAsUpEnabled(true);
 
 	}
 
@@ -148,10 +147,8 @@ public class SearchNearMeActivity extends MapActivity implements
 	@Override
 	public void onMyLocationChange(Location arg0) {
 		// move it.
-		map.animateCamera(cameraUpdater.centerAt(arg0.getLatitude(),
+		map.moveCamera(cameraUpdater.centerAt(arg0.getLatitude(),
 				arg0.getLongitude()));
-
-		map.setOnMyLocationChangeListener(null);
 	}
 
 	@Override

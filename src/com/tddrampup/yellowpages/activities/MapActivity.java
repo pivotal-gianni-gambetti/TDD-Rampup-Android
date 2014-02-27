@@ -13,7 +13,7 @@ import com.tddrampup.R;
 import com.tddrampup.yellowpages.ui.map.CameraUpdateWrapper;
 
 @ContentView(R.layout.activity_map)
-public abstract class MapActivity extends RoboActivity {
+public class MapActivity extends RoboActivity {
 
 	public interface MapProvider {
 
@@ -36,9 +36,6 @@ public abstract class MapActivity extends RoboActivity {
 		super.onCreate(savedInstanceState);
 
 		map = provider.get(this);
-
-		map.setMyLocationEnabled(true);
-		map.setIndoorEnabled(true);
 		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
 		// set the default zoom level
