@@ -20,6 +20,7 @@ import com.tddrampup.toolbox.UserGuid;
 @Singleton
 public class YellowPagesApi extends Api {
 
+	public static final int PAGE_SIZE = 40;
 	private static final String TAG = YellowPagesApi.class.getPackage()
 			.getName();
 
@@ -41,7 +42,13 @@ public class YellowPagesApi extends Api {
 	@Override
 	protected Uri getPath(String path, Map<String, String> params) {
 		Map<String, String> newParams = new HashMap<String, String>(params);
+		newParams.put("fmt", "json");
+		newParams.put("lang", "en");
+
 		newParams.put(API_KEY_QUERY_PARAM, YELLOW_API_KEY);
+
+		newParams.put("UID", guid.getGuid());
+
 		return super.getPath(path, newParams);
 	}
 
@@ -90,11 +97,7 @@ public class YellowPagesApi extends Api {
 		params.put("pg", Integer.toString(page));
 		params.put("what", what);
 		params.put("where", where);
-
-		params.put("UID", guid.getGuid());
-
-		params.put("fmt", "json");
-		params.put("lang", "en");
+		params.put("pgLen", Integer.toString(PAGE_SIZE));
 
 		Uri path = getPath("/FindBusiness/", params);
 
@@ -136,11 +139,6 @@ public class YellowPagesApi extends Api {
 		params.put("bus-name", businessName);
 		params.put("city", city);
 		params.put("prov", province);
-
-		params.put("UID", guid.getGuid());
-
-		params.put("fmt", "json");
-		params.put("lang", "en");
 
 		Uri path = getPath("/GetBusinessDetails/", params);
 
