@@ -191,6 +191,17 @@ public class SearchActivityTest {
 		Mockito.verify(queue, Mockito.times(2)).add(Mockito.<Request<?>> any());
 	}
 
+	@Test
+	public void shouldAddFooterProgressView_toListView() {
+		Assert.assertEquals(1, activity.list.getFooterViewsCount());
+	}
+
+	@Test
+	public void shouldRemoveFooterProgressView_whenThereAreNoMorePagesToLoad() {
+		activity.onResponse(buildResponse(testListing));
+		Assert.assertEquals(0, activity.list.getFooterViewsCount());
+	}
+
 	private FindBusinessResponse buildResponse(Listing... listings) {
 		return buildResponse(1, listings);
 	}

@@ -55,6 +55,7 @@ public class SearchActivity extends RoboListActivity implements
 	@InjectView(android.R.id.list) ListView list;
 	@InjectView(android.R.id.empty) TextView empty;
 	@InjectView(R.id.progress) ProgressBar progress;
+	ProgressBar loadingProgressFooter;
 
 	@Inject SearchResultAdapter adapter;
 	@Inject RequestQueue queue;
@@ -69,8 +70,11 @@ public class SearchActivity extends RoboListActivity implements
 		Log.v(this.getPackageName(), "onCreate");
 		super.onCreate(savedInstanceState);
 
-		setListAdapter(adapter);
+		loadingProgressFooter = new ProgressBar(this);
+
 		getListView().setOnScrollListener(this);
+		getListView().addFooterView(loadingProgressFooter);
+		setListAdapter(adapter);
 
 		// by default, hide the empty view. only display
 		// it AFTER results have been returned
@@ -97,8 +101,12 @@ public class SearchActivity extends RoboListActivity implements
 
 	private boolean pendingRequest = false;
 
+	private boolean canMakeMoreRequests() {
+		return searchPage <= pageCount;
+	}
+
 	private void makeNextApiRequest() {
-		if (!pendingRequest && searchPage <= pageCount) {
+		if (!pendingRequest && canMakeMoreRequests()) {
 
 			pendingRequest = true;
 
@@ -185,6 +193,11 @@ public class SearchActivity extends RoboListActivity implements
 		pendingRequest = false;
 		pageCount = response.summary.pageCount;
 
+		if (!canMakeMoreRequests() && loadingProgressFooter != null) {
+			getListView().removeFooterView(loadingProgressFooter);
+			loadingProgressFooter = null;
+		}
+
 		progress.setVisibility(View.GONE);
 
 		int index = getListView().getFirstVisiblePosition();
@@ -192,7 +205,9 @@ public class SearchActivity extends RoboListActivity implements
 		adapter.addAll(response.listings);
 		adapter.notifyDataSetChanged();
 
-		getListView().setSelection(index);
+		// This offsets the progress footer disappearing from the bottom of the
+		// list when the next page of results is loaded.
+		getListView().setSelection(index + 1);
 	}
 
 	@Override
