@@ -77,7 +77,7 @@ public class SearchActivityTest {
 
 		Assert.assertEquals(View.VISIBLE, activity.progress.getVisibility());
 		Assert.assertEquals(View.GONE, activity.list.getVisibility());
-		Assert.assertEquals(View.GONE, activity.empty.getVisibility());
+		Assert.assertEquals(View.GONE, activity.error.getVisibility());
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class SearchActivityTest {
 
 		Assert.assertEquals(View.GONE, activity.progress.getVisibility());
 		Assert.assertEquals(View.VISIBLE, activity.list.getVisibility());
-		Assert.assertEquals(View.GONE, activity.empty.getVisibility());
+		Assert.assertEquals(View.GONE, activity.error.getVisibility());
 	}
 
 	@Test
@@ -112,11 +112,11 @@ public class SearchActivityTest {
 
 		Assert.assertEquals(View.GONE, activity.progress.getVisibility());
 		Assert.assertEquals(View.GONE, activity.list.getVisibility());
-		Assert.assertEquals(View.VISIBLE, activity.empty.getVisibility());
+		Assert.assertEquals(View.VISIBLE, activity.error.getVisibility());
 	}
 
 	@Test
-	public void shouldNotShowErrorMessage_whenReceivingNetworkRequestAndHasResults() {
+	public void shouldNotShowErrorMessage_whenReceivingNetworkErrorAndAlreadyHasResults() {
 
 		// build response.
 		FindBusinessResponse resp = buildResponse(testListing);
@@ -131,7 +131,7 @@ public class SearchActivityTest {
 
 		Assert.assertEquals(View.GONE, activity.progress.getVisibility());
 		Assert.assertEquals(View.VISIBLE, activity.list.getVisibility());
-		Assert.assertEquals(View.GONE, activity.empty.getVisibility());
+		Assert.assertEquals(View.GONE, activity.error.getVisibility());
 	}
 
 	@Test

@@ -11,10 +11,12 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.google.inject.AbstractModule;
 import com.tddrampup.testing.fake.FakeGoogleMapProvider;
+import com.tddrampup.testing.fake.FakeLocationClientProvider;
 import com.tddrampup.toolbox.GsonRequest;
 import com.tddrampup.toolbox.UserGuid;
 import com.tddrampup.yellowpages.activities.MapActivity.MapProvider;
 import com.tddrampup.yellowpages.activities.NotificationDetailsActivity.NotificationCreator;
+import com.tddrampup.yellowpages.activities.SearchActivity.LocationClientProvider;
 import com.tddrampup.yellowpages.api.YellowPagesApi;
 import com.tddrampup.yellowpages.api.YellowPagesApi.BusinessDetailsResponse;
 import com.tddrampup.yellowpages.api.YellowPagesApi.FindBusinessResponse;
@@ -31,6 +33,8 @@ public class TestApplicationModule extends AbstractModule {
 		bind(MapProvider.class).to(FakeGoogleMapProvider.class);
 		bind(NotificationCreator.class).toInstance(
 				Mockito.mock(NotificationCreator.class));
+
+		bind(LocationClientProvider.class).to(FakeLocationClientProvider.class);
 
 		buildApi();
 	}

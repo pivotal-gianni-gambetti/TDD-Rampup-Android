@@ -6,6 +6,7 @@ import com.tddrampup.toolbox.UserGuid;
 import com.tddrampup.toolbox.UserGuidProvider;
 import com.tddrampup.yellowpages.activities.MapActivity.MapProvider;
 import com.tddrampup.yellowpages.activities.NotificationDetailsActivity.NotificationCreator;
+import com.tddrampup.yellowpages.activities.SearchActivity.LocationClientProvider;
 import com.tddrampup.yellowpages.ui.map.CameraUpdateWrapper;
 import com.tddrampup.yellowpages.ui.map.CameraUpdateWrapperImpl;
 
@@ -19,6 +20,8 @@ public class InjectionModule extends AbstractModule {
 		bind(CameraUpdateWrapper.class).to(CameraUpdateWrapperImpl.class);
 		bind(NotificationCreator.class).to(
 				NotificationDetailsNotificationCreator.class);
+
+		bind(LocationClientProvider.class).to(LocationClientProviderImpl.class);
 	}
 
 }

@@ -229,6 +229,21 @@ public class YellowPagesApi extends Api {
 			return copy;
 		}
 
+		public Location convertToLocation() {
+			try {
+				Location loc = new Location("");
+
+				loc.setLatitude(Double.parseDouble(latitude));
+				loc.setLongitude(Double.parseDouble(longitude));
+
+				return loc;
+			} catch (NumberFormatException e) {
+				Log.d(this.getClass().getName(),
+						"Failure converting GeoLocation to a Location", e);
+				return null;
+			}
+		}
+
 		public LatLng convertToLatLng() {
 			try {
 				return new LatLng(Double.parseDouble(latitude),

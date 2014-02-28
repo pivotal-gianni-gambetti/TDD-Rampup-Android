@@ -23,6 +23,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationClient;
 import com.google.inject.Inject;
 import com.tddrampup.R;
 import com.tddrampup.toolbox.Util;
@@ -33,7 +37,15 @@ import com.tddrampup.yellowpages.api.YellowPagesApi.Listing;
 
 @ContentView(R.layout.activity_search)
 public class SearchActivity extends RoboListActivity implements
-		Listener<FindBusinessResponse>, ErrorListener, OnScrollListener {
+		Listener<FindBusinessResponse>, ErrorListener, OnScrollListener,
+		ConnectionCallbacks, OnConnectionFailedListener {
+
+	public interface LocationClientProvider {
+
+		LocationClient get(Context ctx, ConnectionCallbacks con,
+				OnConnectionFailedListener fail);
+
+	}
 
 	public static Intent getStartIntent(Context context, String what,
 			String where) {
@@ -53,12 +65,15 @@ public class SearchActivity extends RoboListActivity implements
 
 	@Inject YellowPagesApi api;
 	@InjectView(android.R.id.list) ListView list;
-	@InjectView(android.R.id.empty) TextView empty;
+	@InjectView(R.id.error) TextView error;
 	@InjectView(R.id.progress) ProgressBar progress;
 	ProgressBar loadingProgressFooter;
 
 	@Inject SearchResultAdapter adapter;
 	@Inject RequestQueue queue;
+
+	@Inject LocationClientProvider clientProvider;
+	LocationClient locationClient;
 
 	@InjectExtra(value = MainActivity.WHAT_QUERY) private String searchWhat;
 	@InjectExtra(value = MainActivity.WHERE_QUERY) private String searchWhere;
@@ -76,9 +91,7 @@ public class SearchActivity extends RoboListActivity implements
 		getListView().addFooterView(loadingProgressFooter);
 		setListAdapter(adapter);
 
-		// by default, hide the empty view. only display
-		// it AFTER results have been returned
-		empty.setVisibility(View.GONE);
+		locationClient = clientProvider.get(this, this, this);
 
 		// Show the Up button in the action bar.
 		// setupActionBar();
@@ -92,10 +105,15 @@ public class SearchActivity extends RoboListActivity implements
 	}
 
 	@Override
+	protected void onStart() {
+		super.onStart();
+		locationClient.connect();
+	}
+
+	@Override
 	protected void onStop() {
-
 		queue.cancelAll(this);
-
+		locationClient.disconnect();
 		super.onStop();
 	}
 
@@ -178,14 +196,24 @@ public class SearchActivity extends RoboListActivity implements
 	}
 
 	@Override
-	public void onErrorResponse(VolleyError error) {
+	public void onErrorResponse(VolleyError errorResponse) {
 		pendingRequest = false;
 		progress.setVisibility(View.GONE);
-		adapter.notifyDataSetInvalidated();
-		// TODO assuming that the adapter displays the empty message for us.
-		empty.setText("An error occured while execuing: " + error.getMessage());
 
-		Util.Log(Log.ERROR, this.getClass().getName(), error);
+		if (adapter.getCount() > 0) {
+			return;
+		}
+
+		// never going to get data.
+		adapter.notifyDataSetInvalidated();
+
+		// TODO assuming that the adapter displays the empty message for us.
+		error.setText("An error occured while execuing: "
+				+ errorResponse.getMessage());
+		error.setVisibility(View.VISIBLE);
+		list.setVisibility(View.GONE);
+
+		Util.Log(Log.ERROR, this.getClass().getName(), errorResponse);
 	}
 
 	@Override
@@ -199,11 +227,13 @@ public class SearchActivity extends RoboListActivity implements
 		}
 
 		progress.setVisibility(View.GONE);
+		error.setVisibility(View.GONE);
 
 		int index = getListView().getFirstVisiblePosition();
 
 		adapter.addAll(response.listings);
 		adapter.notifyDataSetChanged();
+		list.setVisibility(View.VISIBLE);
 
 		// This offsets the progress footer disappearing from the bottom of the
 		// list when the next page of results is loaded.
@@ -230,4 +260,21 @@ public class SearchActivity extends RoboListActivity implements
 
 	}
 
+	@Override
+	public void onConnectionFailed(ConnectionResult arg0) {
+
+	}
+
+	@Override
+	public void onConnected(Bundle arg0) {
+		adapter.setCurrentBestLocation(locationClient.getLastLocation());
+		adapter.notifyDataSetChanged();
+		locationClient.disconnect();
+	}
+
+	@Override
+	public void onDisconnected() {
+		// TODO Auto-generated method stub
+
+	}
 }
